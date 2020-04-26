@@ -2,3 +2,5 @@
 .env
 # 测试内容
 test
+# 云函数制品目录
+artifacts
