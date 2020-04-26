@@ -1,0 +1,14 @@
+# VPC ( 按需选择, 如不需要打通已有 VPC , 则使用此部分的配置 )
+#   # refer to: https://github.com/serverless-components/tencent-vpc/blob/v2/docs/configure.md
+
+# org: offcn-jl
+# app: serverless
+# component: vpc
+# name: vpc
+# stage: test
+
+# inputs:
+#   region: ${env.REGION}
+#   zone: ${env.ZONE}
+#   vpcName: your_vpc_name
+#   subnetName: your_subnet_name
