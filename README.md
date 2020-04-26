@@ -2,7 +2,7 @@
 基于无服务器架构的各种 RESTFul 接口
 
 ## 食用须知
-1. [TSF](https://cloud.tencent.com/document/product/649) 、[SCF](https://cloud.tencent.com/document/product/583) 、 [TKE](https://cloud.tencent.com/document/product/457) 等产品名称、品牌或商标的一切权利归[腾讯云](https://cloud.tencent.com)所有。
+1. [TSF](https://cloud.tencent.com/document/product/649) 、[SCF](https://cloud.tencent.com/document/product/583) 、 [TKE](https://cloud.tencent.com/document/product/457) 等产品名称、品牌或商标的一切权利归 [腾讯云](https://cloud.tencent.com) 所有。
 1. Serverless、Serverless Framework 是 [serverless.com](https://serverless.com) 的产品。
 1. 本项目整体基于 MIT 协议开源。
 1. 本项目主要包括两个主要分支 : master ( 主分支, 可用于生产环境 )、 new-feature ( 新功能分支, 包含处于测试和验证阶段的新功能 )。
