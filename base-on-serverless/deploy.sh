@@ -4,8 +4,8 @@
 sh build.sh
 
 # 部署
-if [ "$1" == "release" ]; then
-    sls deploy --all --stage release
+if [ "$1" == "prod" ]; then
+    sls deploy --all --stage prod
 else
-    sls deploy --all --stage test
+    sls deploy --all --stage dev
 fi
