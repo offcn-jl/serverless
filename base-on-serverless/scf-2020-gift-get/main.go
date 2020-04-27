@@ -23,7 +23,7 @@ var builtTime = ""
 
 func main() {
 	r := chaos.Default()
-	r.Use(handler.AddVersions(version+builtTime), MainHandler)
+	r.Use(handler.AddVersions(version+builtTime), handler.CheckOrigin(), MainHandler)
 	r.Run()
 }
 
