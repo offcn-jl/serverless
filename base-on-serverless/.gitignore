@@ -1,0 +1,7 @@
+# 供 Serverless 引用的环境变量
+.env.dev
+.env.prod
+# 测试内容
+test
+# 云函数制品目录
+artifacts

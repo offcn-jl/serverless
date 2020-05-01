@@ -1,0 +1,19 @@
+# PostgreSQL for Serverless（ServerlessDB）
+# refer to: https://github.com/serverless-components/tencent-postgresql/blob/v2/docs/configure.md
+
+org: offcn-jl
+app: serverless-apis
+component: postgresql
+name: postgre-sql
+stage: dev
+
+inputs:
+  region: ${env:REGION} # 地域
+  zone: ${env:ZONE} # 可用区
+  dBInstanceName: ${org}-${app}-${stage}
+  extranetAccess: true # 公网访问
+  vpcConfig:
+    # vpcId: ${vpc.vpcId} # 如不需要打通已有 VPC , 则使用此部分的配置
+    # subnetId: ${vpc.subnetId} # 如不需要打通已有 VPC , 则使用此部分的配置
+    vpcId: ${env:VPC} # 如需要打通已有 VPC 则需要手动配置, 此处引用 .env 文件中手动配置的内容 https://console.cloud.tencent.com/vpc/vpc
+    subnetId: ${env:SUBNET} # 如需要打通已有 VPC 则需要手动配置, 此处引用 .env 文件中手动配置的内容
