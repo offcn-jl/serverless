@@ -9,8 +9,8 @@
 package main
 
 import (
-	"serverless/go-common/database/orm"
-	"serverless/go-common/database/orm/structs"
+	"serverless/common/database/orm"
+	"serverless/common/database/orm/structs"
 )
 
 func main() {

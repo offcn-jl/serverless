@@ -10,11 +10,9 @@ package database
 
 import (
 	"errors"
-	"serverless/go-common/configer"
-	"serverless/go-common/logger"
+	"github.com/offcn-jl/go-common/configer"
+	"github.com/offcn-jl/go-common/logger"
 )
-
-var Version = "0.1.0"
 
 /**
  * 数据库配置

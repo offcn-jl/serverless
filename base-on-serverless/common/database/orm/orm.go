@@ -13,16 +13,14 @@ import (
 	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/offcn-jl/go-common/logger"
 	"reflect"
 	"regexp"
-	"serverless/go-common/database"
-	"serverless/go-common/logger"
+	"serverless/common/database"
 	"strconv"
 	"time"
 	"unicode"
 )
-
-var Version = "0.1.0"
 
 type orm struct {
 	PostgreSQL postgreSQL

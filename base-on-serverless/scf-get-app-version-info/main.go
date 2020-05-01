@@ -9,11 +9,11 @@
 package main
 
 import (
-	"github.com/offcn-jl/chaos-go-scf"
-	"github.com/offcn-jl/chaos-go-scf/fake-http"
-	"serverless/go-common/database/orm"
-	"serverless/go-common/database/orm/structs"
-	"serverless/go-common/handler"
+	"github.com/offcn-jl/cscf"
+	"github.com/offcn-jl/cscf/fake-http"
+	"serverless/common/database/orm"
+	"serverless/common/database/orm/structs"
+	"serverless/common/handler"
 )
 
 var version = "0.1.0"

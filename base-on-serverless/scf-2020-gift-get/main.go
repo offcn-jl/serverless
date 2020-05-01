@@ -10,12 +10,12 @@
 package main
 
 import (
-	"github.com/offcn-jl/chaos-go-scf"
-	"github.com/offcn-jl/chaos-go-scf/fake-http"
-	"serverless/go-common/configer"
-	"serverless/go-common/database/orm"
-	"serverless/go-common/database/orm/structs"
-	"serverless/go-common/handler"
+	"github.com/offcn-jl/cscf"
+	"github.com/offcn-jl/cscf/fake-http"
+	"github.com/offcn-jl/go-common/configer"
+	"serverless/common/database/orm"
+	"serverless/common/database/orm/structs"
+	"serverless/common/handler"
 )
 
 var version = "0.1.0"
@@ -57,7 +57,7 @@ func MainHandler(c *chaos.Context) {
 	giftUpdateInfo := structs.EventsGift{
 		Phone:      c.Param("Phone"),
 		SourceIP:   c.ClientIP(),
-		ApiVersion: configer.Conf.Version,
+		ApiVersion: configer.Conf.Version + " ( " + version + builtTime + " )",
 	}
 	tx.Model(structs.EventsGift{}).Where("id = ?", giftInfo.ID).Updates(&giftUpdateInfo)
 

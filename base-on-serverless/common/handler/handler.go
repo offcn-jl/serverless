@@ -9,30 +9,26 @@
 package handler
 
 import (
-	"github.com/offcn-jl/chaos-go-scf"
-	"github.com/offcn-jl/chaos-go-scf/fake-http"
-	"serverless/go-common/codes"
-	"serverless/go-common/configer"
-	"serverless/go-common/database"
-	"serverless/go-common/database/orm"
-	"serverless/go-common/logger"
+	"github.com/offcn-jl/cscf"
+	"github.com/offcn-jl/cscf/fake-http"
+	"github.com/offcn-jl/go-common"
+	"github.com/offcn-jl/go-common/codes"
+	"github.com/offcn-jl/go-common/configer"
 	"strings"
 )
 
 // 向响应头添加版本信息
 func AddVersions(apiVersion string) chaos.HandlerFunc {
 	return func(c *chaos.Context) {
-		c.Header(configer.Conf.Project+"-Version", configer.Conf.Version)
-		c.Header(configer.Conf.Project+"-Configer-Version", configer.Version)
-		c.Header(configer.Conf.Project+"-Logger-Version", logger.Version)
-		c.Header(configer.Conf.Project+"-Database-Version", database.Version)
-		c.Header(configer.Conf.Project+"-Database-ORM-Version", orm.Version)
-		c.Header(configer.Conf.Project+"-Api-Version", apiVersion)
+		c.Header("X-CSCF-Version", chaos.Version)
+		c.Header("X-Common-Version", common.Version)
+		c.Header("X-"+configer.Conf.Project+"-Version", configer.Conf.Version)
+		c.Header("X-"+configer.Conf.Project+"-Api-Version", apiVersion)
 		c.Next()
 	}
 }
 
-// 跨域检查与跨域头添加 中间件
+// 跨域检查
 func CheckOrigin() chaos.HandlerFunc {
 	return func(c *chaos.Context) {
 		// 跨域校验
