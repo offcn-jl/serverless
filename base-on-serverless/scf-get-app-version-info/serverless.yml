@@ -16,7 +16,7 @@ inputs:
   runtime: Go1 # 运行环境
   region: ${env:REGION} # 地域
   memorySize: 64 # 内存大小
-  timeout: 3 # 超时时间
+  timeout: 5 # 超时时间
   vpcConfig:
     vpcId: ${env:VPC}
     subnetId: ${env:SUBNET}
@@ -43,7 +43,7 @@ inputs:
               # description: 应用 - 版本控制 - 版本 - 获取信息 # 描述
               enableCORS: FALSE
               responseType: JSON
-              serviceTimeout: 120
+              serviceTimeout: 10
               param:
                 - name: AppID
                   position: PATH
