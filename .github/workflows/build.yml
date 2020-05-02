@@ -21,14 +21,16 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Remove go mod replaces
-      run: workspace=$(pwd)
+      run: |
+        workspace=$(pwd)
         cd base-on-serverless
         go mod edit -dropreplace=github.com/offcn-jl/cscf
         go mod edit -dropreplace=github.com/offcn-jl/go-common
         cd ${workspace}
 
     - name: Commit go mod
-      run: git add go.mod
+      run: |
+        git add go.mod
         git commit -m "Github Action > Remove go mod replaces"
 
     - name: Get dependencies
@@ -50,5 +52,5 @@ jobs:
       with:
         token: ${{secrets.CODECOV_TOKEN}}
 
-    - name: Push go mod
-      run: git push
+#    - name: Push go mod 将移除 replace 的 go mod 进行提交 -> 规划中
+#      run: git push
