@@ -28,11 +28,6 @@ jobs:
         go mod edit -dropreplace=github.com/offcn-jl/go-common
         cd ${workspace}
 
-#    - name: Commit go mod
-#      run: |
-#        git add go.mod
-#        git commit -m "Github Action > Remove go mod replaces"
-
     - name: Get dependencies
       run: |
         workspace=$(pwd)
@@ -58,6 +53,3 @@ jobs:
       uses: codecov/codecov-action@v1.0.6
       with:
         token: ${{secrets.CODECOV_TOKEN}}
-
-#    - name: Push go mod 将移除 replace 的 go mod 进行提交 -> 规划中
-#      run: git push
