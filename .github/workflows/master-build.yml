@@ -30,7 +30,7 @@ jobs:
 
     - name: Commit go mod
       run: |
-        git add go.mod
+        git add */go.mod
         git commit -m "Github Action > Remove go mod replaces"
 
     - name: Get dependencies
