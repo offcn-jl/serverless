@@ -35,9 +35,14 @@ jobs:
 
     - name: Get dependencies
       run: |
-        cd base-on-serverless
-        go mod download
-        cd ${workspace}
+#        cd base-on-serverless
+#        go mod download
+#        cd ${workspace}
+        go get -v -t -d ./...
+        if [ -f Gopkg.toml ]; then
+          curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
+          dep ensure
+        fi
 
 #    - name: Build # 编译测试流程 -> 规划中
 #      run: go build -v .
