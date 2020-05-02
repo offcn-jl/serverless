@@ -20,6 +20,17 @@ jobs:
     - name: Check out code into the Go module directory
       uses: actions/checkout@v2
 
+    - name: Remove go mod replaces
+      run: workspace=$(pwd)
+        cd base-on-serverless
+        go mod edit -dropreplace=github.com/offcn-jl/cscf
+        go mod edit -dropreplace=github.com/offcn-jl/go-common
+        cd ${workspace}
+
+    - name: Commit go mod
+      run: git add go.mod
+        git commit -m "Github Action : Remove go mod replaces"
+
     - name: Get dependencies
       run: |
         go get -v -t -d ./...
@@ -38,3 +49,6 @@ jobs:
       uses: codecov/codecov-action@v1.0.6
       with:
         token: ${{secrets.CODECOV_TOKEN}}
+
+    - name: Push go mod
+        run: git push
