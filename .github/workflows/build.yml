@@ -28,10 +28,10 @@ jobs:
         go mod edit -dropreplace=github.com/offcn-jl/go-common
         cd ${workspace}
 
-    - name: Commit go mod
-      run: |
-        git add go.mod
-        git commit -m "Github Action > Remove go mod replaces"
+#    - name: Commit go mod
+#      run: |
+#        git add go.mod
+#        git commit -m "Github Action > Remove go mod replaces"
 
     - name: Get dependencies
       run: |
