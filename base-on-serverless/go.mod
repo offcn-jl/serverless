@@ -4,8 +4,7 @@ go 1.12
 
 require (
 	github.com/jinzhu/gorm v1.9.12
-	github.com/offcn-jl/chaos-go-scf v0.0.0-20200428113435-bf3989e49a6b // indirect
-	github.com/offcn-jl/cscf v0.0.0-20200422072856-dfa76f029278
+	github.com/offcn-jl/cscf v0.0.0-20200502025411-fd0546ea314c
 	github.com/offcn-jl/go-common v0.0.0-20200429024900-a9522f28c623
 )
 
