@@ -38,7 +38,7 @@ jobs:
         cd base-on-serverless
         go mod download
         cd ${workspace}
-        cd base-on-serverless
+        cd base-on-tsf
         go mod download
 
 #    - name: Build # 编译测试流程 -> 规划中
