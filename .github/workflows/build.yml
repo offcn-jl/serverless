@@ -51,4 +51,4 @@ jobs:
         token: ${{secrets.CODECOV_TOKEN}}
 
     - name: Push go mod
-        run: git push
+      run: git push
