@@ -46,7 +46,13 @@ jobs:
 #      run: go build -v .
 
     - name: Test
-      run: go test ./... -race -coverprofile=coverage.txt -covermode=atomic
+      run: |
+        workspace=$(pwd)
+        cd base-on-serverless
+        go test ./... -race -coverprofile=coverage.txt -covermode=atomic
+        cd ${workspace}
+        cd base-on-tsf
+        go test ./... -race -coverprofile=coverage.txt -covermode=atomic
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v1.0.6
