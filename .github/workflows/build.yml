@@ -35,6 +35,7 @@ jobs:
 
     - name: Get dependencies
       run: |
+        workspace=$(pwd)
         cd base-on-serverless
         go mod download
         cd ${workspace}
