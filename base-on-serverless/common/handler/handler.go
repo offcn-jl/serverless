@@ -14,6 +14,7 @@ import (
 	"github.com/offcn-jl/go-common"
 	"github.com/offcn-jl/go-common/codes"
 	"github.com/offcn-jl/go-common/configer"
+	"serverless/common/config"
 	"strings"
 )
 
@@ -22,8 +23,8 @@ func AddVersions(apiVersion string) chaos.HandlerFunc {
 	return func(c *chaos.Context) {
 		c.Header("X-CSCF-Version", chaos.Version)
 		c.Header("X-Common-Version", common.Version)
-		c.Header("X-"+configer.Conf.Project+"-Version", configer.Conf.Version)
-		c.Header("X-"+configer.Conf.Project+"-Api-Version", apiVersion)
+		c.Header("X-"+config.Project+"-Version", config.Version)
+		c.Header("X-"+config.Project+"-Api-Version", apiVersion)
 		c.Next()
 	}
 }
