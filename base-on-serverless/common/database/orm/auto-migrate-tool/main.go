@@ -9,14 +9,17 @@
 package main
 
 import (
-	"serverless/common/database/orm"
+	"github.com/offcn-jl/go-common/database/orm"
 	"serverless/common/database/orm/structs"
 )
 
+// 数据库结构自动迁移工具
 func main() {
-	o := orm.New()
-	o.PostgreSQL.Marketing.AutoMigrate(
+	// 自动迁移数据库结构
+	orm.PostgreSQL.AutoMigrate(
 		&structs.VersionControlInfo{},
 		&structs.EventsGift{},
 	)
+	// 退出前关闭数据库连接
+	defer orm.Close()
 }
