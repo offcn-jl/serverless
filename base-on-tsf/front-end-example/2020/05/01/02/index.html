@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示页面</title>
+    <script src="../../public.js"></script> <!-- 公共组件 -->
+    <script src="https://statics.jilinoffcn.com/libraries/jquery/jquery-3.4.1.min.js"></script> <!-- JQuery 插件 -->
+    <script chaos-v4-id="1" chaos-v4-type="page" src="https://statics.jilinoffcn.com/libraries/login-v4/main.js">/* 哈士齐登陆模块 V4 [ 测试活动 ] */</script>
+</head>
+<body>
+
+<p><span id="local"></span> 预约情况: <span id="usage"></span> / <span id="total"></span> 【 已预约数量 / 剩余数量 】</p>
+<p>已预约数量可以正数 ( 作为预约数量 ), 倒数 ( 作为剩余数量 ); 剩余数量功能可以去除, 或用来限制发放总量, 或开启超卖模式 （ 限制发放总量但是发放完毕后自动补货 ) .</p>
+
+<p id="result">预约成功后可显示预约记录 ID, 及预约序号. 预约记录 ID ( 或预约序号 ) 不仅可以用来策划奖品发放类活动, 还可以用来策划盖楼类活动.</p>
+
+<div class="chaos-login-page-form" style="display: none;"></div>
+<div class="chaos-login-page-is-login" style="display: none;">加载中...</div>
+
+<script>
+    $(()=>{
+        // 定义接口地址
+        const host = "http://localhost:8080";
+        // 定义活动名称
+        const event = "test";
+        // 定义商品总量
+        const total = 5;
+        // 定义是否超卖 ( 超出总量 )
+        const oversold = true;
+        // 定义补充步长 ( 预约数量超出总量后要进行补充的数量 )
+        const supply = 10;
+
+        // 登陆模块 提交后事件处理钩子 ( 在页面加载完成 [ ChaosSingleSignOnModuleInfo.Completed == true ] 前定义，可以使登陆模块在加载的过程中即可触发这个钩子，即使用户第一轮没有获取到卡券，也可以在后续打开页面时获取到卡券 )
+        // 如果是不接受超卖的活动, 需要重新规划钩子的定义未知或提交逻辑
+        ChaosPageAfterSubmitHook = (phone) => {
+            $.ajax({
+                type: "POST",
+                url: host+"/2020/05/01/"+event+"-"+ChaosSingleSignOnModuleInfo.CRMOID+"/subscribe/"+phone,
+                complete: (XMLHttpRequest, textStatus)=> {
+                    if (textStatus === "success" && XMLHttpRequest.status === 200) {
+                        $(".chaos-login-page-is-login").html("预约记录ID: " + XMLHttpRequest.responseJSON.Result.ID + ", 预约序号:" + XMLHttpRequest.responseJSON.Result.RowNumber)
+                    } else {
+                        handleError(XMLHttpRequest);
+                    }
+                }
+            })
+        }
+
+        // 更新总量
+        $("#total").html(total);
+
+        // 定时器, 等待页面加载完成
+        let initWatcher = setInterval(()=>{
+            if ( typeof ChaosSingleSignOnModuleInfo.Completed === "boolean" && ChaosSingleSignOnModuleInfo.Completed ) {
+                clearInterval(initWatcher);
+
+                // 显示当前分部
+                $("#local").html(ChaosSingleSignOnModuleInfo.CRMOName);
+
+                // 定时器, 定期获取预约数量信息
+                let surplusWatcher = setInterval(()=>{
+                    $.ajax({
+                        type: "GET",
+                        url: host+"/2020/05/01/"+event+"-"+ChaosSingleSignOnModuleInfo.CRMOID+"/count",
+                        complete: (XMLHttpRequest, textStatus)=> {
+                            if (textStatus === "success" && XMLHttpRequest.status === 200) {
+                                // 更新已预约数量
+                                $("#usage").html(XMLHttpRequest.responseJSON.Result);
+                                // 判断奖品是否还有余量, 是否开启超卖
+                                if (XMLHttpRequest.responseJSON.Result > total && !oversold) {
+                                    // 奖品没有余量, 并且没有开启超卖
+                                    // 关闭监听器
+                                    clearInterval(surplusWatcher);
+                                    // 移除表单元素，关闭领取功能
+                                    $("#result").html("剩余数量为 0");
+                                    $("#phone").remove();
+                                    $("#submit").remove();
+                                } else if (XMLHttpRequest.responseJSON.Result > total && oversold) {
+                                    // 奖品没有余量, 但是开启了超卖模式
+                                    // 更新总量 ( 增加 supply*(n+1) 个, n 使用已预约数量除以 supply 求得 )
+                                    $("#total").html((parseInt(XMLHttpRequest.responseJSON.Result/supply)+1)*supply);
+                                }
+                            } else {
+                                handleError(XMLHttpRequest);
+                            }
+                        }
+                    })
+                },1500);
+            }
+        },500);
+    });
+</script>
+
+</body>
+</html>

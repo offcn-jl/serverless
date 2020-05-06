@@ -1,0 +1,15 @@
+#!/bin/bash
+
+export Debug="true"
+export AllowOrigins="your_allow_origins"
+export TencentCloudAPISecretID="your_id"
+export TencentCloudAPISecretKey="your_key"
+export PostgreSQLDBName="your_db_name"
+export PostgreSQLHost="your_host"
+export PostgreSQLPassword="your_password"
+export PostgreSQLPort="your_port"
+export PostgreSQLSSLMode="your_ssl_mode"
+export PostgreSQLUser="your_user"
+
+chmod +x ./main
+./main

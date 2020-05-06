@@ -3,5 +3,7 @@ artifacts/main
 
 # Configured script
 artifacts/start.sh
+artifacts/start.test.sh
+artifacts/start.release.sh
 
 result.zip

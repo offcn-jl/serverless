@@ -1,36 +1,24 @@
 /*
-   @Time : 2020/4/22 5:04 下午
-   @Author : Rebeta
+   @Time : 2020/5/4 9:54 上午
+   @Author : ShadowWalker
    @Email : master@rebeta.cn
-   @File : handler
+   @File : cors
    @Software: GoLand
 */
 
-package handler
+package middleware
 
 import (
-	"github.com/offcn-jl/cscf"
-	"github.com/offcn-jl/cscf/fake-http"
-	"github.com/offcn-jl/go-common"
+	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/codes"
 	"github.com/offcn-jl/go-common/configer"
+	"net/http"
 	"strings"
 )
 
-// 向响应头添加版本信息
-func AddVersions(apiVersion string) chaos.HandlerFunc {
-	return func(c *chaos.Context) {
-		c.Header("X-CSCF-Version", chaos.Version)
-		c.Header("X-Common-Version", common.Version)
-		c.Header("X-"+configer.Conf.Project+"-Version", configer.Conf.Version)
-		c.Header("X-"+configer.Conf.Project+"-Api-Version", apiVersion)
-		c.Next()
-	}
-}
-
-// 跨域检查
-func CheckOrigin() chaos.HandlerFunc {
-	return func(c *chaos.Context) {
+// CheckOrigin 用于进行跨域检查
+func CheckOrigin() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		// 跨域校验
 		allowOrigins := configer.GetString("AllowOrigins", "")
 		allowOriginsArray := strings.Split(allowOrigins, ",")
@@ -46,7 +34,7 @@ func CheckOrigin() chaos.HandlerFunc {
 		}
 
 		if !pass {
-			c.JSON(http.StatusForbidden, chaos.H{"Code": codes.NotCertifiedCORS, "Error": codes.ErrorText(codes.NotCertifiedCORS)})
+			c.JSON(http.StatusForbidden, gin.H{"Code": codes.NotCertifiedCORS, "Error": codes.ErrorText(codes.NotCertifiedCORS)})
 			c.Abort() // 出错后结束请求
 		}
 
