@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>演示页面</title>
+    <script src="../../public.js"></script> <!-- 公共组件 -->
+    <script src="https://statics.jilinoffcn.com/libraries/jquery/jquery-3.4.1.min.js"></script> <!-- JQuery 插件 -->
+    <script src="https://statics.jilinoffcn.com/libraries/codes.js"></script> <!-- 错误代码对照表, 如果引入过登陆模块则无需单独引入 -->
+</head>
+<body>
+
+<p>预约情况: <span id="usage"></span> / <span id="total"></span> 【 已预约数量 / 剩余数量 】</p>
+<p>已预约数量可以正数 ( 作为预约数量 ), 倒数 ( 作为剩余数量 ); 剩余数量功能可以去除, 或用来限制发放总量, 或开启超卖模式 （ 限制发放总量但是发放完毕后自动补货 ) .</p>
+
+<p id="result">预约成功后可显示预约记录 ID, 及预约序号. 预约记录 ID ( 或预约序号 ) 不仅可以用来策划奖品发放类活动, 还可以用来策划盖楼类活动.</p>
+
+<input type="text" id="phone" placeholder="请输入手机号码">
+<button id="submit">点击预约</button>
+
+<script>
+    $(()=>{
+        // 定义接口地址
+        const host = "http://localhost:8080";
+        // 定义活动名称
+        const event = "test";
+        // 定义商品总量
+        const total = 5;
+        // 定义是否超卖 ( 超出总量 )
+        const oversold = true;
+        // 定义补充步长 ( 预约数量超出总量后要进行补充的数量 )
+        const supply = 10;
+
+        // 更新总量
+        $("#total").html(total);
+
+        // 定时器, 定期获取预约数量信息
+        let surplusWatcher = setInterval(()=>{
+            $.ajax({
+                type: "GET",
+                url: host+"/2020/05/01/"+event+"/count",
+                complete: (XMLHttpRequest, textStatus)=> {
+                    if (textStatus === "success" && XMLHttpRequest.status === 200) {
+                        // 更新已预约数量
+                        $("#usage").html(XMLHttpRequest.responseJSON.Result);
+                        // 判断奖品是否还有余量, 是否开启超卖
+                        if (XMLHttpRequest.responseJSON.Result > total && !oversold) {
+                            // 奖品没有余量, 并且没有开启超卖
+                            // 关闭监听器
+                            clearInterval(surplusWatcher);
+                            // 移除表单元素，关闭领取功能
+                            $("#result").html("剩余数量为 0");
+                            $("#phone").remove();
+                            $("#submit").remove();
+                        } else if (XMLHttpRequest.responseJSON.Result > total && oversold) {
+                            // 奖品没有余量, 但是开启了超卖模式
+                            // 更新总量 ( 增加 supply*(n+1) 个, n 使用已预约数量除以 supply 求得 )
+                            $("#total").html((parseInt(XMLHttpRequest.responseJSON.Result/supply)+1)*supply);
+                        }
+                    } else {
+                        handleError(XMLHttpRequest);
+                    }
+                }
+            })
+        },1500);
+
+        $("#submit").click(()=>{
+            let phone = $("#phone").val();
+            if (phone === "") {
+                alert("请填写电话号码!")
+                return
+            }
+            $.ajax({
+                type: "POST",
+                url: host+"/2020/05/01/"+event+"/subscribe/"+phone,
+                complete: (XMLHttpRequest, textStatus)=> {
+                    if (textStatus === "success" && XMLHttpRequest.status === 200) {
+                        console.log(XMLHttpRequest.responseJSON)
+                        $("#result").html("预约记录ID: " + XMLHttpRequest.responseJSON.Result.ID + ", 预约序号:" + XMLHttpRequest.responseJSON.Result.RowNumber)
+                    } else {
+                        handleError(XMLHttpRequest);
+                    }
+                }
+            })
+        });
+    });
+</script>
+
+</body>
+</html>
