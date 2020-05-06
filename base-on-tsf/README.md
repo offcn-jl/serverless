@@ -18,7 +18,7 @@ Enjoy it. XD
 
 ## 目录结构 ( 按文件名排序 )
 
-- base-on-tsf ( 基于 [TSF ( 腾讯微服务平台 )](https://cloud.tencent.com/document/product/649) 的营销接口 )  
+- base-on-tsf ( 基于 [TSF ( 腾讯微服务平台 )](https://cloud.tencent.com/document/product/649) 的接口 )  
     - artifacts ( 用于最终部署的制品 )  
         - cmdline ( 用于检查应用进程是否存在，没有 .sh 后缀 )  
         - main ( 主程序, 执行构建步骤后生成 )  

@@ -26,8 +26,8 @@ Enjoy it. XD
 ## 目录结构 ( 按文件名排序 )
 - marketing-apis  
     - .github ( Github 配置文件 )
-    - base-on-tsf  ( 基于 [TSF ( 腾讯微服务平台 )](https://cloud.tencent.com/document/product/649) 的营销接口 )  
-    - base-on-serverless ( 基于 [Serverless Framework](https://serverless.com) 及 [腾讯云 Serverless](https://cloud.tencent.com/product/sls) 的营销接口 )  
+    - base-on-serverless ( 基于 [Serverless Framework](https://serverless.com) 及 [腾讯云 Serverless](https://cloud.tencent.com/product/sls) 的接口 )  
+    - base-on-tsf  ( 基于 [TSF ( 腾讯微服务平台 )](https://cloud.tencent.com/document/product/649) 的接口 )  
     - .gitignore ( GIT 配置文件，用于配置需要忽略提交的内容 )  
     - LICENSE ( 版权声明 )  
     - README.md ( 使用说明 )  
