@@ -15,7 +15,7 @@ import (
 	"github.com/offcn-jl/go-common/database/orm"
 	"serverless/common/config"
 	"serverless/common/database/orm/structs"
-	"serverless/common/handler"
+	"serverless/common/middleware"
 )
 
 // 接口版本号
@@ -30,7 +30,7 @@ func main() {
 
 	// 添加中间件及处理函数
 	// 处理函数要作为最后一个参数传入
-	r.Use(handler.AddVersions(version+builtTime), handler.CheckOrigin(), MainHandler)
+	r.Use(middleware.AddVersions(version+builtTime), middleware.CheckOrigin(), MainHandler)
 
 	// 启动框架, 开始监听请求
 	r.Run()
