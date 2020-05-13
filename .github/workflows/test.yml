@@ -17,6 +17,7 @@ jobs:
         echo now envs:
         export -p
         echo now envs end:
+        echo ${{secrets.ENVS}} | echo "12312-"$1
         envsArray=($(echo ${{secrets.ENVS}} | tr ";" "\n"))
         echo "$envsArray[0]"
         echo "$envsArray[1]"
