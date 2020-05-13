@@ -22,7 +22,7 @@ jobs:
         echo ${envsArray[0]}
         echo ${envsArray[1]}
         echo ${envsArray[2]}
-        for env in $envsArray
+        for env in ${envsArray[*]}
         do
           echo "export $env"
           export $env
