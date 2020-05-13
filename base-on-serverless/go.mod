@@ -6,7 +6,7 @@ require (
 	github.com/jinzhu/gorm v1.9.12
 	github.com/offcn-jl/cscf v0.0.0-20200511103748-5fcad49f70a7
 	github.com/offcn-jl/go-common v0.0.0-20200504092729-1134fe9358be
-	github.com/offcn-jl/gscf v0.0.0-20200511103748-5fcad49f70a7
+	github.com/offcn-jl/gscf v0.0.0
 	github.com/stretchr/testify v1.5.1
 	github.com/tencentcloud/tencentcloud-sdk-go v3.0.168+incompatible
 	github.com/tencentyun/scf-go-lib v0.0.0-20200116145541-9a6ea1bf75b8
