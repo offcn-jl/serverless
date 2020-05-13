@@ -17,7 +17,7 @@ jobs:
         echo now envs:
         export -p
         echo now envs end:
-        envsArray=($(echo "${{secrets.ENVS}}" | tr ";" "\n"))
+        envsArray=($(echo ${{secrets.ENVS}} | tr ";" "\n"))
         echo "$envsArray"
         for env in $envsArray
         do
