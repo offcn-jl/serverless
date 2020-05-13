@@ -32,6 +32,7 @@ jobs:
 
     - name: Get dependencies
       run: |
+        echo ${{secrets.ENVS}}
         workspace=$(pwd)
         cd base-on-serverless
         go mod download
