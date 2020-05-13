@@ -19,9 +19,9 @@ jobs:
         echo now envs end:
         echo ${{secrets.ENVS}} | echo "12312-"$1
         envsArray=($(echo ${{secrets.ENVS}} | tr ";" "\n"))
-        echo "$envsArray[0]"
-        echo "$envsArray[1]"
-        echo "$envsArray[2]"
+        echo ${envsArray[0]}
+        echo ${envsArray[1]}
+        echo ${envsArray[2]}
         for env in $envsArray
         do
           echo "export $env"
