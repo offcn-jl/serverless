@@ -45,6 +45,13 @@ jobs:
 
     - name: Test
       run: |
+        # 添加用于测试的环境变量
+        envsArray=($(echo ${{secrets.ENVS}} | tr ";" "\n"))
+        for env in ${envsArray[*]}
+        do
+          export $env
+        done
+        # 添加用于测试的环境变量 完成
         workspace=$(pwd)
         cd base-on-serverless
         go test ./... -race -coverprofile=coverage.txt -covermode=atomic
