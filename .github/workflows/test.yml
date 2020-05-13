@@ -1,0 +1,30 @@
+name: Test
+
+on:
+  push:
+    branches: [ new-feature ]
+
+jobs:
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Add Envs
+      run: |
+        echo ${{secrets.ENVS}}
+        echo now envs:
+        export -p
+        echo now envs end:
+
+        envsArray=($(echo "${{secrets.ENVS}}" | tr ";" "\n"))
+        for env in $envsArray
+        do
+          echo "export $env"
+          export $env
+        done
+
+        echo new envs:
+        export -p
+        echo new envs end:
