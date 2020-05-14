@@ -19,6 +19,13 @@ func main() {
 	orm.PostgreSQL.AutoMigrate(
 		&structs.VersionControlInfo{},
 		&structs.EventsGift{},
+		&structs.SingleSignOnLoginModule{},
+		&structs.SingleSignOnVerificationCode{},
+		&structs.SingleSignOnUser{},
+		&structs.SingleSignOnSession{},
+		&structs.SingleSignOnSuffix{},
+		&structs.SingleSignOnOrganization{},
+		&structs.SingleSignOnCRMRoundLog{},
 	)
 	// 退出前关闭数据库连接
 	defer orm.Close()
