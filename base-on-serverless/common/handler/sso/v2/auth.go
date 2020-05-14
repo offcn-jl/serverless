@@ -51,14 +51,13 @@ func PostSignUp(c *gin.Context) {
 
 	// 校验登录模块配置
 	moduleInfo := structs.SingleSignOnLoginModule{}
-	orm.PostgreSQL.Where("id = ?", c.Param("MID")).Find(&moduleInfo)
+	orm.PostgreSQL.Where("id = ?", sessionInfo.MID).Find(&moduleInfo)
 	if moduleInfo.ID == 0 {
 		// 模块不存在
 		c.JSON(http.StatusBadRequest, gin.H{"Code": -1, "Error": "单点登陆模块配置有误!"})
 		return
 	}
-	// 保存模块 ID 到会话信息中
-	sessionInfo.SSOMID = moduleInfo.ID     // 登陆模块 ID
+	// 保存模块信息到会话信息中
 	sessionInfo.CRMSID = moduleInfo.CRMSID // CRM 活动表单 ID
 
 	// 检查验证码是否正确且未失效
@@ -70,7 +69,7 @@ func PostSignUp(c *gin.Context) {
 		return
 	}
 	// 校验验证码是正确
-	if c.Param("Code") != fmt.Sprint(codeInfo.Code) {
+	if sessionInfo.Code != codeInfo.Code {
 		c.JSON(http.StatusBadRequest, gin.H{"Code": -1, "Error": "验证码有误!"})
 		return
 	}
@@ -88,7 +87,7 @@ func PostSignUp(c *gin.Context) {
 	}
 
 	// 校验用户是否已经参与过当前活动 ( 避免重复创建会话信息, 避免重复推送信息到 CRM )
-	if !isSignIn(sessionInfo.Phone, sessionInfo.SSOMID) {
+	if !isSignIn(sessionInfo.Phone, sessionInfo.MID) {
 		// 未参与
 		// 保存会话
 		createSession(&sessionInfo)
@@ -127,14 +126,13 @@ func PostSignIn(c *gin.Context) {
 
 	// 校验登录模块配置
 	moduleInfo := structs.SingleSignOnLoginModule{}
-	orm.PostgreSQL.Where("id = ?", c.Param("MID")).Find(&moduleInfo)
+	orm.PostgreSQL.Where("id = ?", sessionInfo.MID).Find(&moduleInfo)
 	if moduleInfo.ID == 0 {
 		// 模块不存在
 		c.JSON(http.StatusBadRequest, gin.H{"Code": -1, "Error": "单点登陆模块配置有误!"})
 		return
 	}
 	// 保存模块 ID 到会话信息中
-	sessionInfo.SSOMID = moduleInfo.ID     // 登陆模块 ID
 	sessionInfo.CRMSID = moduleInfo.CRMSID // CRM 活动表单 ID
 
 	// 校验用户是否已经注册 ( 避免重复注册 )
@@ -145,7 +143,7 @@ func PostSignIn(c *gin.Context) {
 	}
 
 	// 校验用户是否已经参与过当前活动 ( 避免重复创建会话信息, 避免重复推送信息到 CRM )
-	if !isSignIn(sessionInfo.Phone, sessionInfo.SSOMID) {
+	if !isSignIn(sessionInfo.Phone, sessionInfo.MID) {
 		// 未参与
 		// 保存会话
 		createSession(&sessionInfo)
@@ -168,7 +166,7 @@ func isSignUp(phone string) bool {
 // isSignIn 检查用户是否已经登陆
 func isSignIn(phone string, mID uint) bool {
 	sessionInfo := structs.SingleSignOnSession{}
-	orm.PostgreSQL.Where("phone = ? and sso_mid = ?", phone, mID).Find(&sessionInfo)
+	orm.PostgreSQL.Where("phone = ? and m_id = ?", phone, mID).Find(&sessionInfo)
 	if sessionInfo.ID != 0 {
 		return true
 	}
@@ -179,8 +177,8 @@ func isSignIn(phone string, mID uint) bool {
 // 创建会话前会进行推送信息到 CRM 的操作
 func createSession(session *structs.SingleSignOnSession) {
 	// 校验后缀
-	if session.ActualSuffix == "0" {
-		// 后缀为 0 ( 等同于未填写 ), 使用默认后缀配置
+	if session.ActualSuffix == "" {
+		// 后缀未填写, 使用默认后缀配置
 		getDefaultSuffix(session)
 	} else {
 		suffixInfo := structs.SingleSignOnSuffix{}
@@ -189,13 +187,13 @@ func createSession(session *structs.SingleSignOnSession) {
 			// 后缀无效, 使用默认后缀配置
 			getDefaultSuffix(session)
 		} else {
-			session.CRMChannel = suffixInfo.Channel
+			session.CRMChannel = suffixInfo.CRMChannel
 			session.CRMUID = suffixInfo.CRMUID
 			session.CurrentSuffix = suffixInfo.Suffix
 			if suffixInfo.CRMOID > 1 {
 				// 配置了 CRMOID 并且不是省级
 				organizationInfo := structs.SingleSignOnOrganization{}
-				orm.PostgreSQL.Where("id = ?", suffixInfo.CRMOID)
+				orm.PostgreSQL.Where("id = ?", suffixInfo.CRMOID).Find(&organizationInfo)
 				session.CRMOCode = organizationInfo.Code
 			} else {
 				// 未配置 CRMOID 或者是省级 ( 等于 1 ), 按手机号码归属地分配 CRM 信息
@@ -211,7 +209,7 @@ func createSession(session *structs.SingleSignOnSession) {
 		// 推送失败, 保存推送失败记录
 		orm.PostgreSQL.Create(&structs.SingleSignOnErrorLog{
 			Phone:      session.Phone,
-			SSOMID:     session.SSOMID,
+			MID:        session.MID,
 			CRMChannel: session.CRMChannel,
 			CRMUID:     session.CRMUID,
 			CRMOCode:   session.CRMOCode,
@@ -250,7 +248,7 @@ func createSession(session *structs.SingleSignOnSession) {
 			// 推送失败, 保存推送失败记录
 			orm.PostgreSQL.Create(&structs.SingleSignOnErrorLog{
 				Phone:      session.Phone,
-				SSOMID:     session.SSOMID,
+				MID:        session.MID,
 				CRMChannel: session.CRMChannel,
 				CRMUID:     session.CRMUID,
 				CRMOCode:   session.CRMOCode,
@@ -263,7 +261,7 @@ func createSession(session *structs.SingleSignOnSession) {
 				// 推送失败, 保存推送失败记录
 				orm.PostgreSQL.Create(&structs.SingleSignOnErrorLog{
 					Phone:      session.Phone,
-					SSOMID:     session.SSOMID,
+					MID:        session.MID,
 					CRMChannel: session.CRMChannel,
 					CRMUID:     session.CRMUID,
 					CRMOCode:   session.CRMOCode,
@@ -342,7 +340,7 @@ func roundCrmList(session *structs.SingleSignOnSession) {
 
 	// 保存分配记录
 	orm.PostgreSQL.Create(&structs.SingleSignOnCRMRoundLog{
-		SSOMID: session.SSOMID,
+		MID:    session.MID,
 		Phone:  session.Phone,
 		CRMOID: crmOrganizations[count%len(crmOrganizations)].ID,
 	})
