@@ -9,29 +9,33 @@
 package middleware
 
 import (
-	"github.com/offcn-jl/cscf"
-	"github.com/offcn-jl/cscf/fake-http"
 	"github.com/offcn-jl/go-common"
 	"github.com/offcn-jl/go-common/codes"
 	"github.com/offcn-jl/go-common/configer"
+	"github.com/offcn-jl/gscf"
+	"github.com/offcn-jl/gscf/fake-http"
 	"serverless/common/config"
 	"strings"
 )
 
-// 向响应头添加版本信息
-func AddVersions(apiVersion string) chaos.HandlerFunc {
-	return func(c *chaos.Context) {
-		c.Header("X-CSCF-Version", chaos.Version)
+// AddVersions 用于向响应头及上下文中添加版本信息
+func AddVersions(apiVersion string) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// 向响应头添加版本信息
+		c.Header("X-GSCF-Version", gin.Version)
 		c.Header("X-Common-Version", common.Version)
 		c.Header("X-"+config.Project+"-Version", config.Version)
 		c.Header("X-"+config.Project+"-Api-Version", apiVersion)
+		// 向上下文添加版本信息
+		c.Set("Api-Version", config.Version+" ( "+apiVersion+" )")
+		// 继续执行调用链
 		c.Next()
 	}
 }
 
 // 跨域检查
-func CheckOrigin() chaos.HandlerFunc {
-	return func(c *chaos.Context) {
+func CheckOrigin() gin.HandlerFunc {
+	return func(c *gin.Context) {
 		// 跨域校验
 		allowOrigins := configer.GetString("AllowOrigins", "")
 		allowOriginsArray := strings.Split(allowOrigins, ",")
@@ -47,7 +51,7 @@ func CheckOrigin() chaos.HandlerFunc {
 		}
 
 		if !pass {
-			c.JSON(http.StatusForbidden, chaos.H{"Code": codes.NotCertifiedCORS, "Error": codes.ErrorText(codes.NotCertifiedCORS)})
+			c.JSON(http.StatusForbidden, gin.H{"Code": codes.NotCertifiedCORS, "Error": codes.ErrorText(codes.NotCertifiedCORS)})
 			c.Abort() // 出错后结束请求
 		}
 
