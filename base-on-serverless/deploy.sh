@@ -1,4 +1,5 @@
-#! /bin/bash
+#!/bin/bash -e
+set -e # 确保脚本在出错时退出
 
 # 编译 Golang 二进制文件
 sh build.sh

@@ -1,4 +1,5 @@
-#! /bin/bash
+#!/bin/bash
+set -e # 确保脚本在出错时退出
 
 WorkSpeace=$(pwd)
 
