@@ -22,14 +22,15 @@ inputs:
     subnetId: ${env:SUBNET_ID}
   environment:
     variables:
-      Debug: ${env:DEBUG}
-      PostgreSQLHost: ${output:${stage}:${app}:postgre-sql.private.host}
-      PostgreSQLPort: ${output:${stage}:${app}:postgre-sql.private.port}
-      PostgreSQLUser: ${output:${stage}:${app}:postgre-sql.private.user}
-      PostgreSQLDBName: ${output:${stage}:${app}:postgre-sql.private.dbname}
-      PostgreSQLPassword: ${output:${stage}:${app}:postgre-sql.private.password}
-      PostgreSQLSSLMode: disable
-      OFFCN_SMS_URL: ${env:OFFCN_SMS_URL}
+      DEBUG: ${env:DEBUG}
+      ALLOW_ORIGINS: ${env:ALLOW_ORIGINS}
+      POSTGRE_SQL_HOST: ${output:${stage}:${app}:postgre-sql.private.host}
+      POSTGRE_SQL_PORT: ${output:${stage}:${app}:postgre-sql.private.port}
+      POSTGRE_SQL_DB_NAME: ${output:${stage}:${app}:postgre-sql.private.dbname}
+      POSTGRE_SQL_USER: ${output:${stage}:${app}:postgre-sql.private.user}
+      POSTGRE_SQL_PASSWORD: ${output:${stage}:${app}:postgre-sql.private.password}
+      POSTGRE_SQL_SSL_MODE: disable
+      OFFCN_SMS_URL: ${env:OFFCN_SMS_URL}0
       OFFCN_SMS_NAME: ${env:OFFCN_SMS_NAME}
       OFFCN_SMS_PWD: ${env:OFFCN_SMS_PWD}
       OFFCN_SMS_TJ_Code: ${env:OFFCN_SMS_TJ_Code}
