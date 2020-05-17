@@ -1,14 +1,15 @@
 # VPC ( 按需选择, 如不需要打通已有 VPC , 则使用此部分的配置 )
-#   # refer to: https://github.com/serverless-components/tencent-vpc/blob/v2/docs/configure.md
+# refer to: https://github.com/serverless-components/tencent-vpc/blob/v2/docs/configure.md
+# 此处不建议使用, sls 会按照 stage 自动创建多个 ( 2个 ) VPC, 在后续与 TSF 或其他服务打通时会十分麻烦
 
-# org: offcn-jl
-# app: serverless
-# component: vpc
-# name: vpc
-# stage: test
+org: offcn-jl
+app: serverless-apis
+component: vpc
+name: vpc
+stage: dev
 
-# inputs:
-#   region: ${env.REGION}
-#   zone: ${env.ZONE}
-#   vpcName: your_vpc_name
-#   subnetName: your_subnet_name
+inputs:
+  region: ${env:REGION}
+  zone: ${env:ZONE}
+  vpcName: ${org}-${app}
+  subnetName: ${org}-${app}

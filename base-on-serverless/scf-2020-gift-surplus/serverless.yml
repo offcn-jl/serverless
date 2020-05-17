@@ -4,7 +4,7 @@
 org: offcn-jl
 app: serverless-apis
 component: scf
-name: A2020GiftSurplus
+name: scf-2020-gift-surplus
 stage: dev
 
 inputs:
@@ -18,8 +18,8 @@ inputs:
   memorySize: 64 # 内存大小
   timeout: 5 # 超时时间
   vpcConfig:
-    vpcId: ${env:VPC}
-    subnetId: ${env:SUBNET}
+    vpcId: ${env:VPC_ID}
+    subnetId: ${env:SUBNET_ID}
   environment: # 环境变量
     variables: # 环境变量数组
       PostgreSQLHost: ${output:${stage}:${app}:postgre-sql.private.host}
@@ -32,9 +32,8 @@ inputs:
       Debug: ${env:DEBUG}
   events:
     - apigw:
-        name: ${org}-${app}-${name}-${stage}
         parameters:
-          serviceId: service-6ej2uglf
+          serviceId: ${env:APIGW_SERVICE_ID}
           protocols:
             - https
           environment: ${env:APIGW_ENV}

@@ -4,32 +4,31 @@
 org: offcn-jl
 app: serverless-apis
 component: scf
-name: scf-2020-gift-checkout
+name: scf-sso-v2-suffix-list
 stage: dev
 
 inputs:
   name: ${org}-${app}-${name}-${stage}
-  description: 2020 - 礼品 - 查询获奖信息 # 描述
-  enableRoleAuth: true # 启用角色和策略
+  description: 单点登陆 - 认证 - 注册
+  enableRoleAuth: true
   src: ./artifacts
-  handler: main # 入口
-  runtime: Go1 # 运行环境
-  region: ${env:REGION} # 地域
-  memorySize: 64 # 内存大小
-  timeout: 5 # 超时时间
+  handler: main
+  runtime: Go1
+  region: ${env:REGION}
+  memorySize: 64
+  timeout: 5
   vpcConfig:
     vpcId: ${env:VPC_ID}
     subnetId: ${env:SUBNET_ID}
-  environment: # 环境变量
-    variables: # 环境变量数组
+  environment:
+    variables:
+      Debug: ${env:DEBUG}
       PostgreSQLHost: ${output:${stage}:${app}:postgre-sql.private.host}
       PostgreSQLPort: ${output:${stage}:${app}:postgre-sql.private.port}
       PostgreSQLUser: ${output:${stage}:${app}:postgre-sql.private.user}
       PostgreSQLDBName: ${output:${stage}:${app}:postgre-sql.private.dbname}
       PostgreSQLPassword: ${output:${stage}:${app}:postgre-sql.private.password}
       PostgreSQLSSLMode: disable
-      AllowOrigins: ${env:ALLOW_ORIGINS}
-      Debug: ${env:DEBUG}
   events:
     - apigw:
         parameters:
@@ -38,22 +37,11 @@ inputs:
             - https
           environment: ${env:APIGW_ENV}
           endpoints:
-            - path: /2020/gift/{Name}/checkout/{Phone}
+            - path: /sso/v2/suffix/list
               method: GET
               enableCORS: FALSE
               responseType: JSON
               serviceTimeout: 10
-              param:
-                - name: Name
-                  position: PATH
-                  required: 'TRUE'
-                  type: string
-                  desc: 奖品名称
-                - name: Phone
-                  position: PATH
-                  required: 'TRUE'
-                  type: int
-                  desc: 手机号码
               function:
                 isIntegratedResponse: TRUE
                 functionQualifier: $LATEST
