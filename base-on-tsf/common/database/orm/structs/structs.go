@@ -40,5 +40,14 @@ func autoMigrate() {
 	logger.Log("ORM : 开始自动迁移数据库表结构 ...")
 	orm.PostgreSQL.AutoMigrate(
 		&E20200501{},
+		&E20200502{},
+		&VersionControlInfo{},
+		&SingleSignOnLoginModule{},
+		&SingleSignOnVerificationCode{},
+		&SingleSignOnUser{},
+		&SingleSignOnSession{},
+		&SingleSignOnSuffix{},
+		&SingleSignOnOrganization{},
+		&SingleSignOnCRMRoundLog{},
 	)
 }
