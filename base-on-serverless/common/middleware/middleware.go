@@ -37,7 +37,7 @@ func AddVersions(apiVersion string) gin.HandlerFunc {
 func CheckOrigin() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// 跨域校验
-		allowOrigins := configer.GetString("AllowOrigins", "")
+		allowOrigins := configer.GetString("ALLOW_ORIGINS", "")
 		allowOriginsArray := strings.Split(allowOrigins, ",")
 		pass := false
 		for _, origin := range allowOriginsArray {
