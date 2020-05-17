@@ -9,64 +9,74 @@
 package sso
 
 import (
+	"bytes"
+	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
-	"github.com/offcn-jl/gscf"
 	"github.com/stretchr/testify/assert"
-	"serverless/common/database/orm/structs"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 	"time"
+	"tsf/common/database/orm/structs"
 )
 
 // 测试 单点登模块注册接口的处理函数
 func TestPostSignUp(t *testing.T) {
-	// 初始化上下文
-	c := gin.Context{}
-	c.Response.Headers = make(map[string]string) // 空 map 需要初始化后才可以使用
+	// 创建上下文
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 
 	// 初始化测试数据
 	initTestData()
 
 	// 测试未绑定 Body 数据
-	PostSignUp(&c)
-	assert.Contains(t, c.Response.Body, "Invalid Json Data")
+
+	PostSignUp(c)
+	assert.Contains(t, w.Body.String(), "Invalid Json Data")
 	// 增加 Body
-	c.Request.Body = "{\"MID\":10000,\"Phone\":\"*\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10000,\"Phone\":\"*\"}"))
 
 	// 测试 验证手机号码是否有效
-	PostSignUp(&c)
-	assert.Contains(t, c.Response.Body, "手机号码不正确")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignUp(c)
+	assert.Contains(t, w.Body.String(), "手机号码不正确")
 	// 修正手机号码
-	c.Request.Body = "{\"MID\":10000,\"Phone\":\"17866668888\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10000,\"Phone\":\"17866668888\"}"))
 
 	// 测试 校验登录模块配置
-	PostSignUp(&c)
-	assert.Contains(t, c.Response.Body, "单点登陆模块配置有误")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignUp(c)
+	assert.Contains(t, w.Body.String(), "单点登陆模块配置有误")
 	// 修正为已存在的登陆模块 ID
-	c.Request.Body = "{\"MID\":10001,\"Phone\":\"17866668888\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10001,\"Phone\":\"17866668888\"}"))
 
 	// 测试 校验是否发送过验证码
-	PostSignUp(&c)
-	assert.Contains(t, c.Response.Body, "请您先获取验证码后再进行注册")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignUp(c)
+	assert.Contains(t, w.Body.String(), "请您先获取验证码后再进行注册")
 	// 模拟获取验证码
 	createTestVerificationCode()
 	// 修正为模拟获取过验证码的手机号码
-	c.Request.Body = "{\"MID\":10001,\"Phone\":\"17888886666\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10001,\"Phone\":\"17888886666\"}"))
 
 	// 测试 校验验证码是正确 ( 此时的上下文中未填写验证码 )
-	PostSignUp(&c)
-	assert.Contains(t, c.Response.Body, "验证码有误")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignUp(c)
+	assert.Contains(t, w.Body.String(), "验证码有误")
 	// 向上请求中添加正确, 但已经失效的验证码
-	c.Request.Body = "{\"MID\":10001,\"Phone\":\"17888886666\",\"Code\":9999}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10001,\"Phone\":\"17888886666\",\"Code\":9999}"))
 
 	// 测试 校验验证码是否有效
-	PostSignUp(&c)
-	assert.Contains(t, c.Response.Body, "验证码失效")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignUp(c)
+	assert.Contains(t, w.Body.String(), "验证码失效")
 	// 更换上下文中的手机号码及验证码未为正确且未失效的内容
-	c.Request.Body = "{\"MID\":10001,\"Phone\":\"17866886688\",\"Code\":9999}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10001,\"Phone\":\"17866886688\",\"Code\":9999}"))
 
 	// 测试 注册成功
-	PostSignUp(&c)
-	assert.Equal(t, "{\"Code\":0}", c.Response.Body)
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignUp(c)
+	assert.Equal(t, "{\"Code\":0}", w.Body.String())
 
 	// 判断用户是否存在
 	assert.True(t, isSignUp("17866886688"))
@@ -77,40 +87,44 @@ func TestPostSignUp(t *testing.T) {
 
 // 测试 单点登陆模块登陆接口的处理函数
 func TestPostSignIn(t *testing.T) {
-	// 初始化上下文
-	c := gin.Context{}
-	c.Response.Headers = make(map[string]string) // 空 map 需要初始化后才可以使用
+	// 创建上下文
+	w := httptest.NewRecorder()
+	c, _ := gin.CreateTestContext(w)
 
 	// 初始化测试数据
 	initTestData()
 
 	// 测试未绑定 Body 数据
-	PostSignIn(&c)
-	assert.Contains(t, c.Response.Body, "Invalid Json Data")
+	PostSignIn(c)
+	assert.Contains(t, w.Body.String(), "Invalid Json Data")
 	// 增加 Body
-	c.Request.Body = "{\"MID\":10000,\"Phone\":\"*\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10000,\"Phone\":\"*\"}"))
 
 	// 测试 验证手机号码是否有效
-	PostSignIn(&c)
-	assert.Contains(t, c.Response.Body, "手机号码不正确")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignIn(c)
+	assert.Contains(t, w.Body.String(), "手机号码不正确")
 	// 修正手机号码
-	c.Request.Body = "{\"MID\":10000,\"Phone\":\"17866886688\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10000,\"Phone\":\"17866886688\"}"))
 
 	// 测试 校验登录模块配置 ( 此时的上下文中没有登陆模块的配置 )
-	PostSignIn(&c)
-	assert.Contains(t, c.Response.Body, "单点登陆模块配置有误")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignIn(c)
+	assert.Contains(t, w.Body.String(), "单点登陆模块配置有误")
 	// 修正登陆模块 ID
-	c.Request.Body = "{\"MID\":10001,\"Phone\":\"17888668866\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10001,\"Phone\":\"17888668866\"}"))
 
 	// 测试 校验用户是否已经注册
-	PostSignIn(&c)
-	assert.Contains(t, c.Response.Body, "请您先进行注册")
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignIn(c)
+	assert.Contains(t, w.Body.String(), "请您先进行注册")
 	// 修正为已经注册的手机号码
-	c.Request.Body = "{\"MID\":10001,\"Phone\":\"17866886688\"}"
+	c.Request, _ = http.NewRequest("POST", "/", bytes.NewBufferString("{\"MID\":10001,\"Phone\":\"17866886688\"}"))
 
 	// 测试 登陆成功
-	PostSignIn(&c)
-	assert.Equal(t, "{\"Code\":0}", c.Response.Body)
+	w.Body.Reset() // 再次测试前重置 body
+	PostSignIn(c)
+	assert.Equal(t, "{\"Code\":0}", w.Body.String())
 
 	// 判断会话是否存在
 	assert.True(t, isSignIn("17866886688", 10001))

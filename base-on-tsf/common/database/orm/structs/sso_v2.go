@@ -20,7 +20,7 @@ type SingleSignOnLoginModule struct {
 	CRMSID        string `gorm:"not null;column:crm_sid" json:"SID" binding:"required"` // CRM 表单 SID
 	Term          uint   `gorm:"not null" json:"Term" binding:"required"`               // 验证码有效期, 分钟
 	Platform      uint   `gorm:"not null" json:"Platform" binding:"required"`           // 发信平台
-	Sign          string `gorm:"not null" json:"Sign"`                                  // 发信签名 ( 仅腾讯云需要 )
+	Sign          string `gorm:"not null" json:"Sign" binding:"required"`               // 发信签名 ( 仅腾讯云短信接口可配置, 中公短信平台的签名不可修改, 但是此处的配置与登陆模块 title 联动 )
 	TemplateID    uint   `gorm:"not null" json:"TemplateID"`                            // 发信模板 ID
 }
 

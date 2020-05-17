@@ -9,16 +9,17 @@
 package sso
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/verify"
-	"github.com/offcn-jl/gscf"
-	"github.com/offcn-jl/gscf/fake-http"
-	"serverless/common/database/orm/structs"
+	"net/http"
+	"tsf/common/database/orm/structs"
 )
 
 // GetSessionInfo 获取会话信息
 func GetSessionInfo(c *gin.Context) {
 	response := struct {
+		Sign           string // 发信签名
 		CRMEID         string // CRM 活动 ID
 		CRMSID         string // CRM 活动表单 ID
 		CRMChannel     uint   // CRM 所属渠道
@@ -46,6 +47,7 @@ func GetSessionInfo(c *gin.Context) {
 		return
 	}
 	// 保存模块信息到会话信息中
+	response.Sign = moduleInfo.Sign     // 发信签名
 	response.CRMEID = moduleInfo.CRMEID // CRM 活动 ID
 	response.CRMSID = moduleInfo.CRMSID // CRM 活动表单 ID
 

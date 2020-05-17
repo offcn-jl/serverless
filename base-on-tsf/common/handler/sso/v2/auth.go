@@ -10,16 +10,17 @@ package sso
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/codes"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
-	"github.com/offcn-jl/gscf"
 	"github.com/xluohome/phonedata"
 	"net/http"
 	"net/url"
-	"serverless/common/database/orm/structs"
 	"time"
+	"tsf/common/config"
+	"tsf/common/database/orm/structs"
 )
 
 // PostSignUp 单点登模块注册接口的处理函数
@@ -34,14 +35,7 @@ func PostSignUp(c *gin.Context) {
 		return
 	}
 	sessionInfo.SourceIP = c.ClientIP()
-	// 从上下文中取出版本信息
-	if apiVersion, exist := c.Get("Api-Version"); exist {
-		// 存在版本信息, 添加到记录中
-		sessionInfo.ApiVersion = apiVersion.(string)
-	} else {
-		// 不存在版本信息, 将记录中的版本设置为 Unknown
-		sessionInfo.ApiVersion = "Unknown"
-	}
+	sessionInfo.ApiVersion = config.Version
 
 	// 验证手机号码是否有效
 	if !verify.Phone(sessionInfo.Phone) {
@@ -109,14 +103,7 @@ func PostSignIn(c *gin.Context) {
 		return
 	}
 	sessionInfo.SourceIP = c.ClientIP()
-	// 从上下文中取出版本信息
-	if apiVersion, exist := c.Get("Api-Version"); exist {
-		// 存在版本信息, 添加到记录中
-		sessionInfo.ApiVersion = apiVersion.(string)
-	} else {
-		// 不存在版本信息, 将记录中的版本设置为 Unknown
-		sessionInfo.ApiVersion = "Unknown"
-	}
+	sessionInfo.ApiVersion = config.Version
 
 	// 验证手机号码是否有效
 	if !verify.Phone(sessionInfo.Phone) {

@@ -9,10 +9,10 @@
 package sso
 
 import (
+	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
-	"github.com/offcn-jl/gscf"
-	"github.com/offcn-jl/gscf/fake-http"
+	"net/http"
 )
 
 // GetSuffixList 获取后缀花名册
