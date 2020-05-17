@@ -1,12 +1,12 @@
 /*
-   @Time : 2020/5/4 9:14 上午
+   @Time : 2020/5/17 1:45 下午
    @Author : ShadowWalker
    @Email : master@rebeta.cn
    @File : photo
    @Software: GoLand
 */
 
-package handler
+package photo
 
 import (
 	"encoding/base64"
@@ -22,7 +22,7 @@ import (
 	"tsf/common/config"
 )
 
-func Photo(c *gin.Context) {
+func PostHandler(c *gin.Context) {
 	logger.Log("开始进行照片处理.")
 	// 从请求 Body 中读取 POST 提交的图片二进制 Buffer
 	body, _ := ioutil.ReadAll(c.Request.Body)
