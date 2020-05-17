@@ -1,8 +1,8 @@
 /*
-   @Time : 2020/4/22 4:56 下午
-   @Author : Rebeta
+   @Time : 2020/5/17 1:53 下午
+   @Author : ShadowWalker
    @Email : master@rebeta.cn
-   @File : apps
+   @File : app
    @Software: GoLand
 */
 
@@ -10,9 +10,7 @@ package structs
 
 import "github.com/jinzhu/gorm"
 
-/**
- * 版本控制表
- */
+// 应用程序 版本控制表
 type VersionControlInfo struct {
 	gorm.Model
 	AppID    string `gorm:"not null"` // 应用 ID
