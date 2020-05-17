@@ -26,8 +26,8 @@ import (
 	"math/rand"
 	"net/http"
 	"net/url"
-	"serverless/common/database/orm/structs"
 	"time"
+	"tsf/common/database/orm/structs"
 )
 
 // PostSendCode 发送验证码接口的处理函数
@@ -41,7 +41,7 @@ func PostSendCode(c *gin.Context) {
 	// 根据登陆模块 ID, 获取登陆模块的配置
 	// 需要使用登陆模块配置中的下发平台、签名、模板 ID
 	SSOLoginModuleInfo := structs.SingleSignOnLoginModule{}
-	orm.PostgreSQL.Where("id = ?", c.Param("LMID")).Find(&SSOLoginModuleInfo)
+	orm.PostgreSQL.Where("id = ?", c.Param("MID")).Find(&SSOLoginModuleInfo)
 	if SSOLoginModuleInfo.ID == 0 {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"Code": -1, "Error": "登陆模块配置有误!"})
 	} else {
@@ -188,16 +188,16 @@ func sendByOffcn(c *gin.Context, templateID, term uint) {
 // sendByTSmsV2 使用腾讯云短信平台发送验证码
 func sendByTSmsV2(c *gin.Context, sign string, templateID, term uint) {
 	// 获取配置
-	tencentCloudAPISecretID4SMS := configer.GetString("TENCENT_SECRET_ID_SMS", "")
-	if tencentCloudAPISecretID4SMS == "" {
+	tencentCloudAPISecretID := configer.GetString("TENCENT_SECRET_ID", "")
+	if tencentCloudAPISecretID == "" {
 		// 未配置 apiURL ( 接口地址 )
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Code": -1, "Error": "未配置 TENCENT_SECRET_ID_SMS"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Code": -1, "Error": "未配置 TENCENT_SECRET_ID"})
 		return
 	}
-	tencentCloudSecretKey4SMS := configer.GetString("TENCENT_SECRET_KEY_SMS", "")
-	if tencentCloudSecretKey4SMS == "" {
+	tencentCloudSecretKey := configer.GetString("TENCENT_SECRET_KEY", "")
+	if tencentCloudSecretKey == "" {
 		// 未配置 sname
-		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Code": -1, "Error": "未配置 TENCENT_SECRET_KEY_SMS"})
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"Code": -1, "Error": "未配置 TENCENT_SECRET_KEY"})
 		return
 	}
 	tencentCloudSmsSdkAppid := configer.GetString("TENCENT_SMS_APPID", "")
@@ -231,7 +231,7 @@ func sendByTSmsV2(c *gin.Context, sign string, templateID, term uint) {
 	 * 本示例采用从环境变量读取的方式，需要预先在环境变量中设置这两个值
 	 * 您也可以直接在代码中写入密钥对，但需谨防泄露，不要将代码复制、上传或者分享给他人
 	 * CAM 密匙查询: https://console.cloud.tencent.com/cam/capi*/
-	credential := common.NewCredential(tencentCloudAPISecretID4SMS, tencentCloudSecretKey4SMS)
+	credential := common.NewCredential(tencentCloudAPISecretID, tencentCloudSecretKey)
 
 	/* 非必要步骤:
 	 * 实例化一个客户端配置对象，可以指定超时时间等配置 */
