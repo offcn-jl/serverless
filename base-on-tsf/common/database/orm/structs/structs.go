@@ -41,6 +41,7 @@ func autoMigrate() {
 	orm.PostgreSQL.AutoMigrate(
 		&E20200501{},
 		&E20200502{},
+		&E20200503{},
 		&VersionControlInfo{},
 		&SingleSignOnLoginModule{},
 		&SingleSignOnVerificationCode{},
