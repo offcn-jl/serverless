@@ -14,6 +14,7 @@ import (
 	"tsf/common/database/orm/structs"
 	"tsf/common/handler/2020/05/01"
 	"tsf/common/handler/2020/05/02"
+	h20200503 "tsf/common/handler/2020/05/03"
 	"tsf/common/handler/app"
 	"tsf/common/handler/photo"
 	"tsf/common/middleware"
@@ -77,6 +78,10 @@ func main() {
 				// PatchConsume 消费礼品
 				GE02.PATCH("/:Name/consume/:Phone/detail/:ConsumeDetail", h20200502.PatchConsume)
 			}
+
+			// 活动 03 路由
+			// 需要进行参与次数计数的活动
+			GM05.PATCH("/03/add", h20200503.PatchAdd)
 		}
 	}
 

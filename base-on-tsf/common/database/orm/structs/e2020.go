@@ -10,7 +10,6 @@ package structs
 
 import "github.com/jinzhu/gorm"
 
-// 20200501
 // 可用于带计数的预约类活动
 type E20200501 struct {
 	gorm.Model
@@ -19,7 +18,6 @@ type E20200501 struct {
 	ProjectVersion string `gorm:"not null"` // 项目版本
 }
 
-// 20200502
 // 可用于礼品 ( 兑换码 ) 发放类活动
 type E20200502 struct {
 	gorm.Model
@@ -30,4 +28,14 @@ type E20200502 struct {
 	// 平台日志
 	SourceIP   string
 	ApiVersion string
+}
+
+// 可用于需要进行参与次数计数的活动
+type E20200503 struct {
+	gorm.Model
+	Event string `gorm:"not null" json:"Event" binding:"required"` // 活动标识
+	Phone string `gorm:"not null" json:"Phone" binding:"required"` // 参与者手机号码 ( 参与者标识 )
+	// 平台日志
+	SourceIP   string // 用户 IP
+	ApiVersion string // 接口版本
 }
