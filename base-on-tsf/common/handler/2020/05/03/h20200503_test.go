@@ -33,26 +33,31 @@ func TestPatchAdd(t *testing.T) {
 	c.Request, _ = http.NewRequest("PATCH", "/", bytes.NewBufferString("{\"Event\":\""+evnetName+"\",\"Phone\":\"*\"}"))
 
 	// 测试手机号码正确
+	w.Body.Reset() // 再次测试前重置 body
 	PatchAdd(c)
 	assert.Contains(t, w.Body.String(), "手机号码不正确")
 	// 修正手机号码
 	c.Request, _ = http.NewRequest("PATCH", "/", bytes.NewBufferString("{\"Event\":\""+evnetName+"\",\"Phone\":\"17866668888\"}"))
 
 	// 测试 第一个用户第一次参加活动
+	w.Body.Reset() // 再次测试前重置 body
 	PatchAdd(c)
 	assert.Equal(t, "{\"Total\":0,\"Count\":0}", w.Body.String())
 
 	// 测试 第一个用户第二次参加活动
+	w.Body.Reset() // 再次测试前重置 body
 	PatchAdd(c)
 	assert.Equal(t, "{\"Total\":1,\"Count\":1}", w.Body.String())
 	// 修改手机号码为第二个用户的号码
 	c.Request, _ = http.NewRequest("PATCH", "/", bytes.NewBufferString("{\"Event\":\""+evnetName+"\",\"Phone\":\"17866886688\"}"))
 
 	// 测试 第二个用户第一次参加活动
+	w.Body.Reset() // 再次测试前重置 body
 	PatchAdd(c)
 	assert.Equal(t, "{\"Total\":2,\"Count\":0}", w.Body.String())
 
 	// 测试 第二个用户第二次参加活动
+	w.Body.Reset() // 再次测试前重置 body
 	PatchAdd(c)
 	assert.Equal(t, "{\"Total\":3,\"Count\":1}", w.Body.String())
 }
