@@ -29,8 +29,7 @@ func TestPostSignUp(t *testing.T) {
 	// 初始化测试数据
 	initTestData()
 
-	// 测试未绑定 Body 数据
-
+	// 测试 未绑定 Body 数据
 	PostSignUp(c)
 	assert.Contains(t, w.Body.String(), "Invalid Json Data")
 	// 增加 Body
