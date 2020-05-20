@@ -5,7 +5,7 @@ go 1.12
 require (
 	github.com/gin-gonic/gin v1.6.3
 	github.com/jinzhu/gorm v1.9.12
-	github.com/offcn-jl/go-common v0.0.0-20200511103557-38b6001478a5
+	github.com/offcn-jl/go-common v0.0.0-20200520060200-b5c70d1d571b
 	github.com/stretchr/testify v1.5.1
 	github.com/tencentcloud/tencentcloud-sdk-go v3.0.157+incompatible
 	github.com/xluohome/phonedata v0.0.0-20200423024337-2be14779ab82
