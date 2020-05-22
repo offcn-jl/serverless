@@ -10,7 +10,10 @@ package photo
 
 import (
 	"encoding/base64"
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"github.com/offcn-jl/go-common/codes"
+	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
 	bda "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/bda/v20200324"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
@@ -19,10 +22,32 @@ import (
 	fmu "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/fmu/v20191213"
 	"io/ioutil"
 	"net/http"
+	"time"
 	"tsf/common/config"
+	"tsf/common/database/orm/structs"
 )
 
 func PostHandler(c *gin.Context) {
+	// 校验应用授权信息
+	if c.GetHeader("Token") == "" {
+		// 授权信息不存在 ( 没有在 Header 中设置 Token )
+		c.JSON(http.StatusUnauthorized, gin.H{"Code": codes.MissingAuthInfo, "Error": codes.ErrorText(codes.MissingAuthInfo)})
+		return
+	}
+	authInfo := structs.AppAuthInfo{}
+	orm.PostgreSQL.Where("token = ?", c.GetHeader("Token")).Find(&authInfo)
+	if authInfo.ID == 0 {
+		// 授权信息不存在 ( 没有找到对应的 Token )
+		c.JSON(http.StatusUnauthorized, gin.H{"Code": codes.NotExistToken, "Error": codes.ErrorText(codes.NotExistToken)})
+		return
+	}
+	duration, _ := time.ParseDuration("-" + fmt.Sprint(authInfo.ExpiresIn) + "s")
+	if authInfo.CreatedAt.Before(time.Now().Add(duration)) {
+		// 授权已过期
+		c.JSON(http.StatusForbidden, gin.H{"Code": codes.NotCertifiedToken, "Error": codes.ErrorText(codes.NotCertifiedToken)})
+		return
+	}
+
 	logger.Log("开始进行照片处理.")
 	// 从请求 Body 中读取 POST 提交的图片二进制 Buffer
 	body, _ := ioutil.ReadAll(c.Request.Body)

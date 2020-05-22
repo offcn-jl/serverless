@@ -16,7 +16,7 @@ import (
 
 var (
 	Project   = "TSF-APIs"
-	Version   = "0.2.0"
+	Version   = "0.2.1"
 	builtTime = ""
 )
 

@@ -19,7 +19,7 @@ import (
 // 版本控制信息包括版本号、发布时间、更新时间、下载地址
 func GetVersion(c *gin.Context) {
 	// 定义版本信息结构
-	info := structs.VersionControlInfo{}
+	info := structs.AppVersionControlInfo{}
 
 	// 获取版本信息
 	orm.PostgreSQL.Where("app_id = ?", c.Param("AppID")).Last(&info)
