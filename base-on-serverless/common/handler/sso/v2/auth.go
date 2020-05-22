@@ -10,16 +10,15 @@ package sso
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/codes"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
+	"github.com/offcn-jl/gscf"
 	"github.com/xluohome/phonedata"
 	"net/http"
 	"net/url"
 	"time"
-	"tsf/common/config"
 	"tsf/common/database/orm/structs"
 )
 
@@ -35,7 +34,6 @@ func PostSignUp(c *gin.Context) {
 		return
 	}
 	sessionInfo.SourceIP = c.ClientIP()
-	sessionInfo.ApiVersion = config.Version
 
 	// 验证手机号码是否有效
 	if !verify.Phone(sessionInfo.Phone) {
@@ -103,7 +101,6 @@ func PostSignIn(c *gin.Context) {
 		return
 	}
 	sessionInfo.SourceIP = c.ClientIP()
-	sessionInfo.ApiVersion = config.Version
 
 	// 验证手机号码是否有效
 	if !verify.Phone(sessionInfo.Phone) {
