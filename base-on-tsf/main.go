@@ -17,6 +17,7 @@ import (
 	h20200503 "tsf/common/handler/2020/05/03"
 	"tsf/common/handler/app"
 	"tsf/common/handler/photo"
+	"tsf/common/handler/sso/v2"
 	"tsf/common/middleware"
 )
 
@@ -83,6 +84,16 @@ func main() {
 			// 需要进行参与次数计数的活动
 			GM05.PATCH("/03/add", h20200503.PatchAdd)
 		}
+	}
+
+	// SSO 路由组
+	ssoV2Group := r.Group("/sso/v2")
+	{
+		// GetSessionInfo 获取会话信息
+		ssoV2Group.GET("/sessions/info/:MID/:Suffix/:Phone", sso.GetSessionInfo)
+
+		// GetSuffixList 获取后缀花名册
+		ssoV2Group.GET("/suffix/list", sso.GetSuffixList)
 	}
 
 	// 启动服务
