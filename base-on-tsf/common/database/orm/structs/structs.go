@@ -51,5 +51,7 @@ func autoMigrate() {
 		&SingleSignOnSuffix{},
 		&SingleSignOnOrganization{},
 		&SingleSignOnCRMRoundLog{},
+		&SingleSignOnErrorLog{},
+		&SingleSignOnPushLog{},
 	)
 }

@@ -98,14 +98,4 @@ func TestGetSessionInfo(t *testing.T) {
 	w.Body.Reset() // 再次测试前重置 body
 	GetSessionInfo(c)
 	assert.Contains(t, w.Body.String(), "\"NeedToRegister\":false")
-
-	// 测试 校验是否需要登陆
-	// 模拟创建会话
-	session := structs.SingleSignOnSession{}
-	session.MID = 10001
-	session.Phone = userInfo.Phone
-	createSession(&session)
-	w.Body.Reset() // 再次测试前重置 body
-	GetSessionInfo(c)
-	assert.Contains(t, w.Body.String(), "\"IsLogin\":true")
 }

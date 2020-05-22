@@ -13,6 +13,7 @@ import (
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/verify"
 	"net/http"
+	"time"
 	"tsf/common/database/orm/structs"
 )
 
@@ -102,14 +103,18 @@ func GetSessionInfo(c *gin.Context) {
 	}
 
 	// 校验是否需要注册
-	if !isSignUp(c.Param("Phone")) {
+	userInfo := structs.SingleSignOnUser{}
+	orm.PostgreSQL.Where("phone = ? and created_at > ?", c.Param("Phone"), time.Now().AddDate(0, 0, -30)).Find(&userInfo)
+	if userInfo.ID == 0 {
 		// 未进行注册, 需要注册
 		response.NeedToRegister = true
 	}
 
 	// 校验是否需要登陆
-	if isSignIn(c.Param("Phone"), moduleInfo.ID) {
-		// 未进行登陆, 需要登陆
+	sessionInfo := structs.SingleSignOnSession{}
+	orm.PostgreSQL.Where("phone = ? and m_id = ?", c.Param("Phone"), moduleInfo.ID).Find(&sessionInfo)
+	if sessionInfo.ID != 0 {
+		// 已经登陆
 		response.IsLogin = true
 	}
 
