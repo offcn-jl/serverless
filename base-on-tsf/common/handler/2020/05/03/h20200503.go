@@ -16,7 +16,6 @@ import (
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
 	"net/http"
-	"tsf/common/config"
 	"tsf/common/database/orm/structs"
 )
 
@@ -41,7 +40,6 @@ func PatchAdd(c *gin.Context) {
 
 	// 添加平台信息
 	eventInfo.SourceIP = c.ClientIP()
-	eventInfo.ApiVersion = config.Version
 
 	// 定义用于 count 的变量 活动参与总人次, 当前用户参与次数
 	total, count := 0, 0

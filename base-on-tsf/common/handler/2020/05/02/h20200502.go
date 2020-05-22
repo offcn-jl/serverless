@@ -66,14 +66,7 @@ func GetGift(c *gin.Context) {
 		Phone:    c.Param("Phone"),
 		SourceIP: c.ClientIP(),
 	}
-	// 从上下文中取出版本信息
-	if apiVersion, exist := c.Get("Api-Version"); exist {
-		// 存在版本信息, 添加到记录中
-		giftUpdateInfo.ApiVersion = apiVersion.(string)
-	} else {
-		// 不存在版本信息, 将记录中的版本设置为 Unknown
-		giftUpdateInfo.ApiVersion = "Unknown"
-	}
+
 	// 更新中奖信息
 	tx.Model(structs.E20200502{}).Where("id = ?", giftInfo.ID).Updates(&giftUpdateInfo)
 

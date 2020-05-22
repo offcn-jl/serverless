@@ -168,14 +168,6 @@ func sendByOffcn(c *gin.Context, templateID, term uint) {
 							Code:     code,
 							SourceIP: c.ClientIP(),
 						}
-						// 从上下文中取出版本信息
-						if apiVersion, exist := c.Get("Api-Version"); exist {
-							// 存在版本信息, 添加到记录中
-							ssoVerificationCodeInfo.ApiVersion = apiVersion.(string)
-						} else {
-							// 不存在版本信息, 将记录中的版本设置为 Unknown
-							ssoVerificationCodeInfo.ApiVersion = "Unknown"
-						}
 						// 保存记录
 						orm.PostgreSQL.Create(&ssoVerificationCodeInfo)
 					}
@@ -315,14 +307,6 @@ func sendByTSmsV2(c *gin.Context, sign string, templateID, term uint) {
 			Term:     term,
 			Code:     code,
 			SourceIP: c.ClientIP(),
-		}
-		// 从上下文中取出版本信息
-		if apiVersion, exist := c.Get("Api-Version"); exist {
-			// 存在版本信息, 添加到记录中
-			ssoVerificationCodeInfo.ApiVersion = apiVersion.(string)
-		} else {
-			// 不存在版本信息, 将记录中的版本设置为 Unknown
-			ssoVerificationCodeInfo.ApiVersion = "Unknown"
 		}
 		// 保存记录
 		orm.PostgreSQL.Create(&ssoVerificationCodeInfo)

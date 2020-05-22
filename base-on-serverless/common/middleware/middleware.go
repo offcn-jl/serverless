@@ -26,8 +26,6 @@ func AddVersions(apiVersion string) gin.HandlerFunc {
 		c.Header("X-Common-Version", common.Version)
 		c.Header("X-"+config.Project+"-Version", config.Version)
 		c.Header("X-"+config.Project+"-Api-Version", apiVersion)
-		// 向上下文添加版本信息
-		c.Set("Api-Version", config.Version+" ( "+apiVersion+" )")
 		// 继续执行调用链
 		c.Next()
 	}

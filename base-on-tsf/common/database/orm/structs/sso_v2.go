@@ -31,8 +31,7 @@ type SingleSignOnVerificationCode struct {
 	Term  uint   `gorm:"not null"` // 有效期, 分钟
 	Code  uint   `gorm:"not null"` // 验证码
 	// 平台日志
-	SourceIP   string // 客户 IP
-	ApiVersion string // 接口版本
+	SourceIP string // 客户 IP
 }
 
 // 单点登陆 用户
@@ -51,19 +50,18 @@ type SingleSignOnSession struct {
 	ActualSuffix  string `json:"Suffix"`   // 调用接口时使用的后缀
 	CurrentSuffix string `gorm:"not null"` // 最终使用的后缀
 	// CRM 推送配置
-	CRMChannel uint `gorm:"not null"`                   // CRM 所属渠道
-	CRMOCode   uint `gorm:"not null;column:crm_o_code"` // CRM 所属组织代码
-	CRMUID     uint `gorm:"not null"`                   // CRM 用户ID
+	CRMSID     string `gorm:"not null;column:crm_sid"`    // CRM 表单 SID
+	CRMChannel uint   `gorm:"not null"`                   // CRM 所属渠道
+	CRMOCode   uint   `gorm:"not null;column:crm_o_code"` // CRM 所属组织代码
+	CRMUID     uint   `gorm:"not null"`                   // CRM 用户ID
 	// CRM 推送配置 可选字段
-	CRMSID             string `gorm:"not null;column:crm_sid"` // CRM 表单 SID
-	CustomerName       string `json:"CustomerName"`            // 客户姓名
-	CustomerIdentityID uint   `json:"CustomerIdentityID"`      // 客户身份 ID, 来自 CRM 中的客户身份字典
-	CustomerColleage   string `json:"CustomerColleage"`        // 客户毕业院校
-	CustomerMayor      string `json:"CustomerMayor"`           // 客户专业
-	Remark             string `json:"Remark"`                  // 备注
+	CustomerName       string `json:"CustomerName"`       // 客户姓名
+	CustomerIdentityID uint   `json:"CustomerIdentityID"` // 客户身份 ID, 来自 CRM 中的客户身份字典
+	CustomerColleage   string `json:"CustomerColleage"`   // 客户毕业院校
+	CustomerMayor      string `json:"CustomerMayor"`      // 客户专业
+	Remark             string `json:"Remark"`             // 备注
 	// 平台日志
-	SourceIP   string // 用户 IP
-	ApiVersion string // 接口版本
+	SourceIP string // 用户 IP
 }
 
 // 单点登陆 后缀
@@ -106,4 +104,23 @@ type SingleSignOnErrorLog struct {
 	CRMUID     uint   `gorm:"not null"` // CRM 用户ID
 	CRMOCode   uint   `gorm:"not null"` // CRM 所属组织代码
 	Error      string `gorm:"not null"` // 错误内容
+}
+
+type SingleSignOnPushLog struct {
+	gorm.Model
+	Phone string `gorm:"not null" json:"Phone" binding:"required"` // 客户手机号码
+	// 后缀信息
+	ActualSuffix  string `json:"Suffix"`   // 调用接口时使用的后缀
+	CurrentSuffix string `gorm:"not null"` // 最终使用的后缀
+	// CRM 推送配置
+	CRMSID     string `gorm:"not null;column:crm_sid" json:"CRMSID" binding:"required"` // CRM 表单 SID
+	CRMChannel uint   `gorm:"not null"`                                                 // CRM 所属渠道
+	CRMOCode   uint   `gorm:"not null;column:crm_o_code"`                               // CRM 所属组织代码
+	CRMUID     uint   `gorm:"not null"`                                                 // CRM 用户ID
+	// CRM 推送配置 可选字段
+	CustomerName       string `json:"CustomerName"`       // 客户姓名
+	CustomerIdentityID uint   `json:"CustomerIdentityID"` // 客户身份 ID, 来自 CRM 中的客户身份字典
+	CustomerColleage   string `json:"CustomerColleage"`   // 客户毕业院校
+	CustomerMayor      string `json:"CustomerMayor"`      // 客户专业
+	Remark             string `json:"Remark"`             // 备注
 }
