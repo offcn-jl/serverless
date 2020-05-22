@@ -26,8 +26,7 @@ type E20200502 struct {
 	Phone         string // 领取人手机号
 	ConsumeDetail string // 消费详情
 	// 平台日志
-	SourceIP   string
-	ApiVersion string
+	SourceIP string
 }
 
 // 可用于需要进行参与次数计数的活动
@@ -36,6 +35,5 @@ type E20200503 struct {
 	Event string `gorm:"not null" json:"Event" binding:"required"` // 活动标识
 	Phone string `gorm:"not null" json:"Phone" binding:"required"` // 参与者手机号码 ( 参与者标识 )
 	// 平台日志
-	SourceIP   string // 用户 IP
-	ApiVersion string // 接口版本
+	SourceIP string // 用户 IP
 }
