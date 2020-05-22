@@ -22,6 +22,7 @@ inputs:
     subnetId: ${env:SUBNET_ID}
   environment:
     variables:
+      PHONE_DATA_DIR: ./
       DEBUG: ${env:DEBUG}
       ALLOW_ORIGINS: ${env:ALLOW_ORIGINS}
       POSTGRE_SQL_HOST: ${output:${stage}:${app}:db-postgre-sql.private.host}
