@@ -19,10 +19,10 @@ import (
 	"tsf/common/database/orm/structs"
 )
 
-// PatchAdd 参与活动
+// PostAdd 参与活动
 // 完成参与后会返回参与活动的状态
 // 即, 返回 活动参与总人次, 当前用户参与次数
-func PatchAdd(c *gin.Context) {
+func PostAdd(c *gin.Context) {
 	// 绑定数据
 	eventInfo := structs.E20200503{}
 	if err := c.ShouldBindJSON(&eventInfo); err != nil {

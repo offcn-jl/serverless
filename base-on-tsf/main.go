@@ -82,7 +82,7 @@ func main() {
 
 			// 活动 03 路由
 			// 需要进行参与次数计数的活动
-			GM05.PATCH("/03/add", h20200503.PatchAdd)
+			GM05.POST("/03/add", h20200503.PostAdd)
 		}
 	}
 
