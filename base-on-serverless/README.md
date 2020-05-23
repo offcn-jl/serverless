@@ -20,32 +20,41 @@ Enjoy it. XD
     - common ( 组件库 )  
         - config ( 配置库 )  
             - config.go ( 配置库 )  
-        - database ( 数据库 )  
-            - orm ( ORM 库 )  
-                - auto-migrate-tool ( 自动迁移工具 )  
-                    - main.go ( 自动迁移工具主程序 )  
-                - structs ( 结构体库 )  
-                    - 2020-gift.go ( 礼品功能的结构体 )  
-                    - apps.go ( 应用管理功能的结构体 )  
+        - handler ( 处理函数包 )  
+            - sso ( 单点登录系统接口的处理函数包 )  
+                - v2 ( 第二代单点登录系统接口的处理函数包 )  
+                    - auth.go ( 鉴权相关接口的处理函数包 ) 
+                    - auth_test.go ( 鉴权相关接口的处理函数包的单元测试 ) 
+                    - push.go ( 推送相关接口的处理函数包 ) 
+                    - push_test.go ( 推送相关接口的处理函数包的单元测试 ) 
+                    - verification_code.go ( 验证码相关接口的处理函数包 ) 
         - middleware ( 处理函数库 )  
             - middleware.go ( 处理函数库 )  
     - db-postgre-sql ( Serverless 组件, 数据库, Serverless PG 数据库 )  
         - serverless.yml ( Serverless 组件配置文件 )
-    - scf-2020-gift-checkout ( Serverless 组件, 云函数, 查询礼品信息接口 )  
+    - scf-sso-v2-auth-sign-in ( Serverless 组件, 云函数, 第二代单点登陆, 鉴权, 登陆 )  
+        - artifacts ( 制品目录, 执行构建步骤后自动生成 )
+            - main ( 主程序二进制文件, 执行构建步骤后自动生成 )
+            - phone.dat ( 手机号码数据库, 需要自行从 github.com/xluohome/phonedata 包中复制到此处 )
         - main.go ( 主程序 )
         - serverless.yml ( Serverless 组件配置文件 )
-    - scf-2020-gift-consume ( Serverless 组件, 云函数, 消费礼品接口 )  
+    - scf-sso-v2-auth-sign-up ( Serverless 组件, 云函数, 第二代单点登陆, 鉴权, 注册 )  
+        - artifacts ( 制品目录, 执行构建步骤后自动生成 )
+            - main ( 主程序二进制文件, 执行构建步骤后自动生成 )
+            - phone.dat ( 手机号码数据库, 需要自行从 github.com/xluohome/phonedata 包中复制到此处 )
         - main.go ( 主程序 )
         - serverless.yml ( Serverless 组件配置文件 )
-    - scf-2020-gift-get ( Serverless 组件, 云函数, 获取礼品接口 )  
+    - scf-sso-v2-crm-push ( Serverless 组件, 云函数, 第二代单点登陆, CRM, 推送 )  
+        - artifacts ( 制品目录, 执行构建步骤后自动生成 )
+            - main ( 主程序二进制文件, 执行构建步骤后自动生成 )
+            - phone.dat ( 手机号码数据库, 需要自行从 github.com/xluohome/phonedata 包中复制到此处 )
         - main.go ( 主程序 )
         - serverless.yml ( Serverless 组件配置文件 )
-    - scf-2020-gift-surplus ( Serverless 组件, 云函数, 查询礼品剩余数量接口 )  
+    - scf-sso-v2-send-verification-code ( Serverless 组件, 云函数, 第二代单点登陆, 验证码, 发送 )  
+        - artifacts ( 制品目录, 执行构建步骤后自动生成 )
+            - main ( 主程序二进制文件, 执行构建步骤后自动生成 )
+            - phone.dat ( 手机号码数据库, 需要自行从 github.com/xluohome/phonedata 包中复制到此处 )
         - main.go ( 主程序 )
-        - serverless.yml ( Serverless 组件配置文件 )
-    - scf-get-app-version-info ( Serverless 组件, 云函数, 获取应用版本控制信息接口 )  
-        - main.go ( 主程序 )
-        - main_test.go ( 主程序单元测试 )
         - serverless.yml ( Serverless 组件配置文件 )
     - vpc ( Serverless 组件, VPC, 仅提供演示配置 )
         -   serverless.yml.example ( 演示配置 )
@@ -60,8 +69,9 @@ Enjoy it. XD
 
 ## 部署
 1. 准备工作
-	1. [创建 API 密钥](https://console.cloud.tencent.com/capi) （ 注意妥善保管 ）
-	1. 获取 API 网关的 Service ID, 替换到每个组件的配置文件 ( serverless.yml ) 中
+	1. 创建 [API 密钥](https://console.cloud.tencent.com/capi) ( 注意妥善保管 )
+	1. 创建 [API 网关](https://console.cloud.tencent.com/apigateway/index)
+	1. [ 可选, 建议 ] 创建 [私有网络 ( VPC )](https://console.cloud.tencent.com/vpc/vpc) ( 使用 VPC Component 自动编排时存在会为不同的 stage 创建不同的 vpc 的问题; 还存在修改 name 后, 会创建并使用新的 vpc 的问题; 后续使用会存在很多不确定性, 并且在与 TKE 或 TSF 等业务进行打通时会增加很多的工作量; 如果对 stage 的隔离性有更高要求的话, 可以选择使用 Component 自动编排 )
 1. 安装 Golang
 1. 按需修改代码 ( 不需要的组件可直接删除 )
 1. 修改配置
@@ -71,8 +81,9 @@ Enjoy it. XD
 	1. 打开测试环境的环境变量配置文件 ( .env.dev )，将其中各个字段后的 your_xxx 替换为对应的数据
 1. 部署
 	1. MacOS / Linux
-		1. 直接在本目录执行 sh deploy.sh
+		1. 直接在本目录执行 sh deploy.sh ( 测试环境 )
+		1. 直接在本目录执行 sh deploy.sh prod ( 生产环境 )
 	1. Windows  
 	    1. 手动进行构建及部署操作
 1. 完成部署
-    1. Serverless Framework 会在每个组件部署成功后返回访问方式等信息
+    1. Serverless Framework 会在每个组件部署成功后返回访问方式等信息 ( output )
