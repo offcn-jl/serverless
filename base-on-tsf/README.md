@@ -96,7 +96,8 @@ Enjoy it. XD
 	1. 打开生产环境启动脚本 ( start.release.sh )，将其中各个字段后的 your_xxx 替换为对应的数据
 1. 构建
 	1. MacOS / Linux
-		1. 直接在本目录执行 sh build.sh
+		1. 直接在本目录执行 sh build.sh ( 构建测试环境程序包 )
+		1. 直接在本目录执行 sh build.sh release ( 生产环境程序包 )
 	1. Windows
 		1. 交叉编译 Linux 64 位二进制可执行程序，在本目录执行 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o artifacts/main
 		1. 根据要部署的环境, 将对应环境的启动脚本复制并重命名为 start.sh
