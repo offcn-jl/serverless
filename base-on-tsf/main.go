@@ -87,7 +87,7 @@ func main() {
 	}
 
 	// SSO 路由组
-	ssoV2Group := r.Group("/sso/v2")
+	ssoV2Group := r.Group("/sso/v2", middleware.CheckOrigin())
 	{
 		// GetSessionInfo 获取会话信息
 		ssoV2Group.GET("/sessions/info/:MID/:Suffix/:Phone", sso.GetSessionInfo)
