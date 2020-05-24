@@ -13,10 +13,11 @@ import "github.com/jinzhu/gorm"
 // 应用程序 版本控制表
 type AppVersionControlInfo struct {
 	gorm.Model
-	AppID    string `gorm:"not null"` // 应用 ID
-	AppName  string `gorm:"not null"` // 应用名称
-	Version  string `gorm:"not null"` // 版本
-	Download string `gorm:"not null"` // 下载链接
+	AppID       string `gorm:"not null"` // 应用 ID
+	AppName     string `gorm:"not null"` // 应用名称
+	Version     string `gorm:"not null"` // 版本
+	Description string `gorm:"not null"` // 更新说明
+	Download    string `gorm:"not null"` // 下载链接
 }
 
 // 应用程序 授权信息
