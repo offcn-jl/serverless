@@ -54,7 +54,7 @@ func GetSessionInfo(c *gin.Context) {
 
 	// 校验后缀
 	suffixInfo := structs.SingleSignOnSuffix{}
-	orm.PostgreSQL.Where("suffix = ?", c.Param("Suffix")).Find(&suffixInfo)
+	orm.PostgreSQL.Unscoped().Where("suffix = ?", c.Param("Suffix")).Find(&suffixInfo)
 	if suffixInfo.ID == 0 {
 		// 后缀不存在
 		// 获取默认后缀 ( ID = 1, 第一条 )
