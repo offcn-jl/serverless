@@ -331,6 +331,8 @@ func initTestData() {
 	// 后缀 1
 	suffixInfo := structs.SingleSignOnSuffix{}
 	suffixInfo.ID = 2
+	tempTime := time.Now().Add(8760 * time.Hour) // 一年后
+	suffixInfo.DeletedAt = &tempTime
 	suffixInfo.Suffix = "test"
 	suffixInfo.Name = "后缀 1"
 	suffixInfo.CRMUser = "test"
