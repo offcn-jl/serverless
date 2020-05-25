@@ -57,7 +57,7 @@ func PostPush(c *gin.Context) {
 		pushInfo.CRMOCode = tempSession.CRMOCode
 	} else {
 		suffixInfo := structs.SingleSignOnSuffix{}
-		orm.PostgreSQL.Where("suffix = ?", pushInfo.ActualSuffix).Find(&suffixInfo)
+		orm.PostgreSQL.Unscoped().Where("suffix = ?", pushInfo.ActualSuffix).Find(&suffixInfo)
 		if suffixInfo.ID == 0 {
 			// 后缀无效, 使用默认后缀配置
 			tempSession := structs.SingleSignOnSession{Phone: pushInfo.Phone}

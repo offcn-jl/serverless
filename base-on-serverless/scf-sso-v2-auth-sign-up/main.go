@@ -17,7 +17,7 @@ import (
 )
 
 // 接口版本号
-var version = "0.1.0"
+var version = "0.1.1"
 
 // 接口构建时间, 将会在编译时注入
 var builtTime = ""

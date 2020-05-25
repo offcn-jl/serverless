@@ -166,7 +166,7 @@ func createSession(session *structs.SingleSignOnSession) {
 		getDefaultSuffix(session)
 	} else {
 		suffixInfo := structs.SingleSignOnSuffix{}
-		orm.PostgreSQL.Where("suffix = ?", session.ActualSuffix).Find(&suffixInfo)
+		orm.PostgreSQL.Unscoped().Where("suffix = ?", session.ActualSuffix).Find(&suffixInfo)
 		if suffixInfo.ID == 0 {
 			// 后缀无效, 使用默认后缀配置
 			getDefaultSuffix(session)
