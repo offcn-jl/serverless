@@ -92,8 +92,11 @@ func main() {
 		// GetSessionInfo 获取会话信息
 		ssoV2Group.GET("/sessions/info/:MID/:Suffix/:Phone", sso.GetSessionInfo)
 
-		// GetSuffixList 获取后缀花名册
-		ssoV2Group.GET("/suffix/list", sso.GetSuffixList)
+		// GetSuffixList 获取目前可用的后缀花名册
+		ssoV2Group.GET("/suffix/list/available", sso.GetAvailableSuffixList)
+
+		// GetDeletingSuffixList 获取即将删除的后缀花名册
+		ssoV2Group.GET("/suffix/list/deleting", sso.GetDeletingSuffixList)
 	}
 
 	// 启动服务
