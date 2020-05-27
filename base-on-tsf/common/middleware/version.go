@@ -11,7 +11,7 @@ package middleware
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common"
-	"tsf/common/config"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/config"
 )
 
 // AddVersions 用于向响应头添加版本信息

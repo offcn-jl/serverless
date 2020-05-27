@@ -11,11 +11,11 @@ package sso
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"github.com/stretchr/testify/assert"
 	"net/http/httptest"
 	"testing"
 	"time"
-	"tsf/common/database/orm/structs"
 )
 
 func TestGetSessionInfo(t *testing.T) {

@@ -12,9 +12,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/verify"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"net/http"
 	"time"
-	"tsf/common/database/orm/structs"
 )
 
 // GetSessionInfo 获取会话信息

@@ -15,10 +15,10 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/codes"
 	"github.com/offcn-jl/go-common/database/orm"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/config"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/utils"
 	"net/http"
-	"tsf/common/config"
-	"tsf/common/database/orm/structs"
-	"tsf/common/utils"
 )
 
 // PostSubscribe 处理用户订阅 ( 参与活动 ) 事件

@@ -15,6 +15,8 @@ import (
 	"github.com/offcn-jl/go-common/codes"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/config"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	bda "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/bda/v20200324"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
@@ -23,8 +25,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"time"
-	"tsf/common/config"
-	"tsf/common/database/orm/structs"
 )
 
 func PostHandler(c *gin.Context) {

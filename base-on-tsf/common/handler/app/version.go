@@ -11,8 +11,8 @@ package app
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"net/http"
-	"tsf/common/database/orm/structs"
 )
 
 // GetVersion 获取应用程序版本控制信息接口的处理函数
