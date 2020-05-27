@@ -1,0 +1,51 @@
+# 云函数
+# https://github.com/serverless-components/tencent-scf/blob/v2/doc/serverless.yaml
+
+org: offcn-jl
+app: serverless-apis
+component: scf
+name: scf-sso-v2-auth-sign-up
+stage: dev
+
+inputs:
+  name: ${org}-${app}-${name}-${stage}
+  description: 单点登陆 - 认证 - 注册
+  enableRoleAuth: true
+  src: ./artifacts
+  handler: main
+  runtime: Go1
+  region: ${env:REGION}
+  memorySize: 64
+  timeout: 5
+  vpcConfig:
+    vpcId: ${env:VPC_ID}
+    subnetId: ${env:SUBNET_ID}
+  environment:
+    variables:
+      PHONE_DATA_DIR: ./
+      DEBUG: ${env:DEBUG}
+      ALLOW_ORIGINS: ${env:ALLOW_ORIGINS}
+      POSTGRE_SQL_HOST: ${output:${stage}:${app}:db-postgre-sql.private.host}
+      POSTGRE_SQL_PORT: ${output:${stage}:${app}:db-postgre-sql.private.port}
+      POSTGRE_SQL_DB_NAME: ${output:${stage}:${app}:db-postgre-sql.private.dbname}
+      POSTGRE_SQL_USER: ${output:${stage}:${app}:db-postgre-sql.private.user}
+      POSTGRE_SQL_PASSWORD: ${output:${stage}:${app}:db-postgre-sql.private.password}
+      POSTGRE_SQL_SSL_MODE: disable
+      TENCENT_SECRET_ID: ${env:TENCENT_SECRET_ID}
+      TENCENT_SECRET_KEY: ${env:TENCENT_SECRET_KEY}
+  events:
+    - apigw:
+        parameters:
+          serviceId: ${env:APIGW_SERVICE_ID}
+          protocols:
+            - https
+          environment: ${env:APIGW_ENV}
+          endpoints:
+            - path: /sso/v2/auth/sign-up
+              method: POST
+              enableCORS: FALSE
+              responseType: JSON
+              serviceTimeout: 10
+              function:
+                isIntegratedResponse: TRUE
+                functionQualifier: $LATEST

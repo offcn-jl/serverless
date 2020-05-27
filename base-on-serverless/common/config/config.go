@@ -14,7 +14,7 @@ import (
 
 var (
 	Project = "SCF-APIs"
-	Version = "0.1.0"
+	Version = "0.2.0"
 )
 
 // 初始化

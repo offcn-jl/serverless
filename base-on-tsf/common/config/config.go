@@ -16,7 +16,7 @@ import (
 
 var (
 	Project   = "TSF-APIs"
-	Version   = "0.1.0"
+	Version   = "0.4.0"
 	builtTime = ""
 )
 
@@ -34,14 +34,12 @@ func init() {
 	Version = Version + builtTime
 	// 打印版本信息
 	logger.Log("Project " + Project + " Ver." + Version)
-	// 检查是否可以获取到配置信息
-	if configer.GetString("TencentCloudAPISecretID", "") == "" {
-		logger.Panic(errors.New("未配置 TencentCloudAPISecretID"))
+	// 获取配置信息, 并检查是否正确获取
+	if TencentCloud.APISecretID = configer.GetString("TENCENT_SECRET_ID", ""); TencentCloud.APISecretID == "" {
+		logger.Panic(errors.New("未配置 TENCENT_SECRET_ID"))
 	}
-	// 获取配置信息
-	TencentCloud.APISecretID = configer.GetString("TencentCloudAPISecretID", "")
-	if configer.GetString("TencentCloudAPISecretKey", "") == "" {
-		logger.Panic(errors.New("未配置 TencentCloudAPISecretKey"))
+	// 获取配置信息, 并检查是否正确获取
+	if TencentCloud.SecretKey = configer.GetString("TENCENT_SECRET_KEY", ""); TencentCloud.SecretKey == "" {
+		logger.Panic(errors.New("未配置 TENCENT_SECRET_KEY"))
 	}
-	TencentCloud.SecretKey = configer.GetString("TencentCloudAPISecretKey", "")
 }
