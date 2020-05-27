@@ -12,9 +12,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/verify"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"net/http"
 	"time"
-	"tsf/common/database/orm/structs"
 )
 
 // GetSessionInfo 获取会话信息
@@ -54,7 +54,7 @@ func GetSessionInfo(c *gin.Context) {
 
 	// 校验后缀
 	suffixInfo := structs.SingleSignOnSuffix{}
-	orm.PostgreSQL.Where("suffix = ?", c.Param("Suffix")).Find(&suffixInfo)
+	orm.PostgreSQL.Unscoped().Where("suffix = ?", c.Param("Suffix")).Find(&suffixInfo)
 	if suffixInfo.ID == 0 {
 		// 后缀不存在
 		// 获取默认后缀 ( ID = 1, 第一条 )

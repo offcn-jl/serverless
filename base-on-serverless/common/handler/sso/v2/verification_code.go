@@ -17,6 +17,7 @@ import (
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
 	"github.com/offcn-jl/gscf"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
@@ -27,7 +28,6 @@ import (
 	"net/http"
 	"net/url"
 	"time"
-	"tsf/common/database/orm/structs"
 )
 
 // PostSendCode 发送验证码接口的处理函数

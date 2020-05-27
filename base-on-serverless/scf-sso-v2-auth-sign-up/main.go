@@ -12,12 +12,12 @@ package main
 import (
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/gscf"
-	"serverless/common/handler/sso/v2"
-	"serverless/common/middleware"
+	"github.com/offcn-jl/serverless-apis/base-on-serverless/common/handler/sso/v2"
+	"github.com/offcn-jl/serverless-apis/base-on-serverless/common/middleware"
 )
 
 // 接口版本号
-var version = "0.1.0"
+var version = "0.1.1"
 
 // 接口构建时间, 将会在编译时注入
 var builtTime = ""

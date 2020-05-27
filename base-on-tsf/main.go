@@ -11,14 +11,14 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
-	"tsf/common/database/orm/structs"
-	"tsf/common/handler/2020/05/01"
-	"tsf/common/handler/2020/05/02"
-	h20200503 "tsf/common/handler/2020/05/03"
-	"tsf/common/handler/app"
-	"tsf/common/handler/photo"
-	"tsf/common/handler/sso/v2"
-	"tsf/common/middleware"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/handler/2020/05/01"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/handler/2020/05/02"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/handler/2020/05/03"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/handler/app"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/handler/photo"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/handler/sso/v2"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/middleware"
 )
 
 // 主函数

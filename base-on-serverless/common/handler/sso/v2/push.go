@@ -15,9 +15,9 @@ import (
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
 	"github.com/offcn-jl/gscf"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"net/http"
 	"net/url"
-	"tsf/common/database/orm/structs"
 )
 
 // PostPush 推送 CRM 数据并保存记录
@@ -57,7 +57,7 @@ func PostPush(c *gin.Context) {
 		pushInfo.CRMOCode = tempSession.CRMOCode
 	} else {
 		suffixInfo := structs.SingleSignOnSuffix{}
-		orm.PostgreSQL.Where("suffix = ?", pushInfo.ActualSuffix).Find(&suffixInfo)
+		orm.PostgreSQL.Unscoped().Where("suffix = ?", pushInfo.ActualSuffix).Find(&suffixInfo)
 		if suffixInfo.ID == 0 {
 			// 后缀无效, 使用默认后缀配置
 			tempSession := structs.SingleSignOnSession{Phone: pushInfo.Phone}

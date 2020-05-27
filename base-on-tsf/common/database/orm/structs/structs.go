@@ -12,8 +12,8 @@ import (
 	"fmt"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/config"
 	"time"
-	"tsf/common/config"
 )
 
 // AutoMigrate 提供表结构自动迁移功能

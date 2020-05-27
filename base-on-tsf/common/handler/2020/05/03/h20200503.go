@@ -15,8 +15,8 @@ import (
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"net/http"
-	"tsf/common/database/orm/structs"
 )
 
 // PostAdd 参与活动

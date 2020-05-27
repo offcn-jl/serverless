@@ -14,8 +14,8 @@ package h20200502
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/offcn-jl/go-common/database/orm"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"net/http"
-	"tsf/common/database/orm/structs"
 )
 
 // GetSurplus 获取礼品剩余数量接口的处理函数

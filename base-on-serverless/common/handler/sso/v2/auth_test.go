@@ -11,10 +11,10 @@ package sso
 import (
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/gscf"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"github.com/stretchr/testify/assert"
 	"testing"
 	"time"
-	"tsf/common/database/orm/structs"
 )
 
 // 测试 单点登模块注册接口的处理函数

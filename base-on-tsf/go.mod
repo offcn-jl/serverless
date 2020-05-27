@@ -1,4 +1,4 @@
-module tsf
+module github.com/offcn-jl/serverless-apis/base-on-tsf
 
 go 1.12
 
