@@ -15,9 +15,9 @@ import (
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
 	"github.com/offcn-jl/gscf"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"net/http"
 	"net/url"
-	"tsf/common/database/orm/structs"
 )
 
 // PostPush 推送 CRM 数据并保存记录

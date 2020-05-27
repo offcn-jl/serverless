@@ -12,9 +12,9 @@ import (
 	"fmt"
 	"github.com/offcn-jl/go-common/database/orm"
 	"github.com/offcn-jl/gscf"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"github.com/stretchr/testify/assert"
 	"testing"
-	"tsf/common/database/orm/structs"
 )
 
 func TestPostPush(t *testing.T) {

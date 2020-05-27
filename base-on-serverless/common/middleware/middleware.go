@@ -14,7 +14,7 @@ import (
 	"github.com/offcn-jl/go-common/configer"
 	"github.com/offcn-jl/gscf"
 	"github.com/offcn-jl/gscf/fake-http"
-	"serverless/common/config"
+	"github.com/offcn-jl/serverless-apis/base-on-serverless/common/config"
 	"strings"
 )
 

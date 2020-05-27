@@ -15,11 +15,11 @@ import (
 	"github.com/offcn-jl/go-common/logger"
 	"github.com/offcn-jl/go-common/verify"
 	"github.com/offcn-jl/gscf"
+	"github.com/offcn-jl/serverless-apis/base-on-tsf/common/database/orm/structs"
 	"github.com/xluohome/phonedata"
 	"net/http"
 	"net/url"
 	"time"
-	"tsf/common/database/orm/structs"
 )
 
 // PostSignUp 单点登模块注册接口的处理函数
