@@ -75,6 +75,7 @@ type SingleSignOnSuffix struct {
 	CRMUID        uint   `gorm:"not null" json:"CRMUID" binding:"required"`                // CRM 用户ID
 	CRMOID        uint   `gorm:"not null;column:crm_oid" json:"CRMOID" binding:"required"` // 所属组织 ID
 	CRMChannel    uint   `gorm:"not null" json:"CRMChannel" binding:"required"`            // 所属渠道
+	NTalkerGID    string `gorm:"column:ntalker_gid" json:"NTalkerGID" binding:"required"`  // 小能咨询组
 }
 
 // 单点登陆 CRM 组织

@@ -18,7 +18,7 @@ import (
 
 // GetAvailableSuffixList 获取目前可用的后缀花名册
 func GetAvailableSuffixList(c *gin.Context) {
-	if rows, err := orm.PostgreSQL.Raw("SELECT suffixes.\"id\",suffixes.suffix,suffixes.\"name\",suffixes.crm_user,suffixes.crm_uid,suffixes.crm_channel,organizations.\"id\",organizations.f_id,organizations.code,organizations.\"name\" FROM single_sign_on_suffixes AS suffixes,single_sign_on_organizations AS organizations WHERE suffixes.deleted_at IS NULL AND suffixes.crm_oid=organizations.\"id\";").Rows(); err != nil {
+	if rows, err := orm.PostgreSQL.Raw("SELECT suffixes.\"id\",suffixes.suffix,suffixes.\"name\",suffixes.crm_user,suffixes.crm_uid,suffixes.crm_channel,suffixes.ntalker_gid,organizations.\"id\",organizations.f_id,organizations.code,organizations.\"name\" FROM single_sign_on_suffixes AS suffixes,single_sign_on_organizations AS organizations WHERE suffixes.deleted_at IS NULL AND suffixes.crm_oid=organizations.\"id\";").Rows(); err != nil {
 		logger.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"Code": -1, "Error": "执行 SQL 查询出错!"})
 	} else {
@@ -29,6 +29,7 @@ func GetAvailableSuffixList(c *gin.Context) {
 			CRMUser    string // CRM 用户名
 			CRMUID     uint   // CRM 用户 ID
 			CRMChannel uint   // CRM 所属渠道
+			NTalkerGID string // 小能咨询组
 			CRMOID     uint   // CRM 组织 ID
 			CRMOFID    uint   // CRM 上级组织 ID
 			CRMOCode   uint   // CRM 组织代码
@@ -44,6 +45,7 @@ func GetAvailableSuffixList(c *gin.Context) {
 				&tempResult.CRMUser,
 				&tempResult.CRMUID,
 				&tempResult.CRMChannel,
+				&tempResult.NTalkerGID,
 				&tempResult.CRMOID,
 				&tempResult.CRMOFID,
 				&tempResult.CRMOCode,
@@ -62,7 +64,7 @@ func GetAvailableSuffixList(c *gin.Context) {
 
 // GetDeletingSuffixList 获取即将删除的后缀花名册
 func GetDeletingSuffixList(c *gin.Context) {
-	if rows, err := orm.PostgreSQL.Raw("SELECT suffixes.\"id\",suffixes.deleted_at,suffixes.suffix,suffixes.\"name\",suffixes.crm_user,suffixes.crm_uid,suffixes.crm_channel,organizations.\"id\",organizations.f_id,organizations.code,organizations.\"name\" FROM single_sign_on_suffixes AS suffixes,single_sign_on_organizations AS organizations WHERE suffixes.deleted_at> NOW() AND suffixes.crm_oid=organizations.\"id\";").Rows(); err != nil {
+	if rows, err := orm.PostgreSQL.Raw("SELECT suffixes.\"id\",suffixes.deleted_at,suffixes.suffix,suffixes.\"name\",suffixes.crm_user,suffixes.crm_uid,suffixes.crm_channel,suffixes.ntalker_gid,organizations.\"id\",organizations.f_id,organizations.code,organizations.\"name\" FROM single_sign_on_suffixes AS suffixes,single_sign_on_organizations AS organizations WHERE suffixes.deleted_at> NOW() AND suffixes.crm_oid=organizations.\"id\";").Rows(); err != nil {
 		logger.Error(err)
 		c.JSON(http.StatusInternalServerError, gin.H{"Code": -1, "Error": "执行 SQL 查询出错!"})
 	} else {
@@ -74,6 +76,7 @@ func GetDeletingSuffixList(c *gin.Context) {
 			CRMUser    string    // CRM 用户名
 			CRMUID     uint      // CRM 用户 ID
 			CRMChannel uint      // CRM 所属渠道
+			NTalkerGID string    // 小能咨询组
 			CRMOID     uint      // CRM 组织 ID
 			CRMOFID    uint      // CRM 上级组织 ID
 			CRMOCode   uint      // CRM 组织代码
@@ -90,6 +93,7 @@ func GetDeletingSuffixList(c *gin.Context) {
 				&tempResult.CRMUser,
 				&tempResult.CRMUID,
 				&tempResult.CRMChannel,
+				&tempResult.NTalkerGID,
 				&tempResult.CRMOID,
 				&tempResult.CRMOFID,
 				&tempResult.CRMOCode,
