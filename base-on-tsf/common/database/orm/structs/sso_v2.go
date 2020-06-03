@@ -67,15 +67,15 @@ type SingleSignOnSession struct {
 // 单点登陆 后缀
 type SingleSignOnSuffix struct {
 	gorm.Model
-	CreatedUserID uint   `gorm:"not null"`                                                 // 创建用户 ID
-	UpdatedUserID uint   `gorm:"not null"`                                                 // 最终修改用户 ID
-	Suffix        string `gorm:"not null;primary_key" json:"Suffix" binding:"required"`    // 后缀 ( 19课堂 个人后缀 )
-	Name          string `gorm:"not null" json:"Name" binding:"required"`                  // 后缀名称
-	CRMUser       string `gorm:"not null" json:"CRMUser" binding:"required"`               // CRM 用户名
-	CRMUID        uint   `gorm:"not null" json:"CRMUID" binding:"required"`                // CRM 用户ID
-	CRMOID        uint   `gorm:"not null;column:crm_oid" json:"CRMOID" binding:"required"` // 所属组织 ID
-	CRMChannel    uint   `gorm:"not null" json:"CRMChannel" binding:"required"`            // 所属渠道
-	NTalkerGID    string `gorm:"column:ntalker_gid" json:"NTalkerGID" binding:"required"`  // 小能咨询组
+	CreatedUserID uint   `gorm:"not null"`                                                         // 创建用户 ID
+	UpdatedUserID uint   `gorm:"not null"`                                                         // 最终修改用户 ID
+	Suffix        string `gorm:"not null;primary_key" json:"Suffix" binding:"required"`            // 后缀 ( 19课堂 个人后缀 )
+	Name          string `gorm:"not null" json:"Name" binding:"required"`                          // 后缀名称
+	CRMUser       string `gorm:"not null" json:"CRMUser" binding:"required"`                       // CRM 用户名
+	CRMUID        uint   `gorm:"not null" json:"CRMUID" binding:"required"`                        // CRM 用户ID
+	CRMOID        uint   `gorm:"not null;column:crm_oid" json:"CRMOID" binding:"required"`         // 所属组织 ID
+	CRMChannel    uint   `gorm:"not null" json:"CRMChannel" binding:"required"`                    // 所属渠道
+	NTalkerGID    string `gorm:"not null;column:ntalker_gid" json:"NTalkerGID" binding:"required"` // 小能咨询组
 }
 
 // 单点登陆 CRM 组织
