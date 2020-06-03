@@ -29,6 +29,7 @@ func GetSessionInfo(c *gin.Context) {
 		CRMUID         uint   // CRM 用户 ID
 		CRMUser        string // CRM 用户名
 		Suffix         string // 后缀 ( 19课堂后缀 )
+		NTalkerGID     string // 小能咨询组
 		IsLogin        bool   // 是否登陆
 		NeedToRegister bool   // 是否需要注册
 	}{}
@@ -60,10 +61,11 @@ func GetSessionInfo(c *gin.Context) {
 		// 获取默认后缀 ( ID = 1, 第一条 )
 		defaultSuffixInfo := structs.SingleSignOnSuffix{}
 		orm.PostgreSQL.First(&defaultSuffixInfo)
-		response.Suffix = defaultSuffixInfo.Suffix         // 后缀 ( 19课堂后缀 )
 		response.CRMChannel = defaultSuffixInfo.CRMChannel // CRM 所属渠道
 		response.CRMUID = defaultSuffixInfo.CRMUID         // CRM 用户 ID
 		response.CRMUser = defaultSuffixInfo.CRMUser       // CRM 用户名
+		response.Suffix = defaultSuffixInfo.Suffix         // 后缀 ( 19课堂后缀 )
+		response.NTalkerGID = defaultSuffixInfo.NTalkerGID // 小能咨询组
 		// 获取默认后缀对应的 CRM 组织信息
 		organizationInfo := structs.SingleSignOnOrganization{}
 		if defaultSuffixInfo.CRMOID == 0 {
@@ -81,10 +83,11 @@ func GetSessionInfo(c *gin.Context) {
 		response.CRMOName = organizationInfo.Name
 	} else {
 		// 后缀存在
-		response.Suffix = suffixInfo.Suffix         // 后缀 ( 19课堂后缀 )
 		response.CRMChannel = suffixInfo.CRMChannel // CRM 所属渠道
 		response.CRMUID = suffixInfo.CRMUID         // CRM 用户 ID
 		response.CRMUser = suffixInfo.CRMUser       // CRM 用户名
+		response.Suffix = suffixInfo.Suffix         // 后缀 ( 19课堂后缀 )
+		response.NTalkerGID = suffixInfo.NTalkerGID // 小能咨询组
 		// 获取 CRM 组织信息
 		organizationInfo := structs.SingleSignOnOrganization{}
 		if suffixInfo.CRMOID == 0 {

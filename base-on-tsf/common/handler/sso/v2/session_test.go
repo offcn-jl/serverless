@@ -41,7 +41,7 @@ func TestGetSessionInfo(t *testing.T) {
 	GetSessionInfo(c)
 	assert.Contains(t, w.Body.String(), "单点登陆模块配置有误")
 	// 此时填写了错误的登陆模块 ID
-	c.Params = gin.Params{gin.Param{Key: "Phone", Value: "17887106666"}, gin.Param{Key: "MID", Value: "1"}}
+	c.Params = gin.Params{gin.Param{Key: "Phone", Value: "17887106666"}, gin.Param{Key: "MID", Value: "20001"}}
 	w.Body.Reset() // 再次测试前重置 body
 	GetSessionInfo(c)
 	assert.Contains(t, w.Body.String(), "单点登陆模块配置有误")
@@ -49,7 +49,7 @@ func TestGetSessionInfo(t *testing.T) {
 	c.Params = gin.Params{gin.Param{Key: "Phone", Value: "17887106666"}, gin.Param{Key: "MID", Value: "10001"}}
 
 	// 测试 后缀不存在或错误
-	defaultInfo := "{\"Sign\":\"中公教育\",\"CRMEID\":\"HD202003061144\",\"CRMSID\":\"6edbf791cfbaaa68442dd75bfd10ae5b\",\"CRMChannel\":7,\"CRMOCode\":22,\"CRMOName\":\"吉林分校\",\"CRMUID\":32431,\"CRMUser\":\"default\",\"Suffix\":\"default\",\"IsLogin\":false,\"NeedToRegister\":true}"
+	defaultInfo := "{\"Sign\":\"中公教育\",\"CRMEID\":\"HD202003061144\",\"CRMSID\":\"6edbf791cfbaaa68442dd75bfd10ae5b\",\"CRMChannel\":7,\"CRMOCode\":22,\"CRMOName\":\"吉林分校\",\"CRMUID\":32431,\"CRMUser\":\"default\",\"Suffix\":\"default\",\"NTalkerGID\":\"NTalkerGID\",\"IsLogin\":false,\"NeedToRegister\":true}"
 	// 此时未配置后缀, 即后缀不存在, 可以认为等同为后缀错误
 	w.Body.Reset() // 再次测试前重置 body
 	GetSessionInfo(c)
@@ -68,25 +68,25 @@ func TestGetSessionInfo(t *testing.T) {
 	orm.PostgreSQL.Model(structs.SingleSignOnSuffix{}).Where("suffix = 'default'").Update("crm_oid", "1")
 
 	// 测试 配置了后缀
-	testInfo := "{\"Sign\":\"中公教育\",\"CRMEID\":\"HD202003061144\",\"CRMSID\":\"6edbf791cfbaaa68442dd75bfd10ae5b\",\"CRMChannel\":104,\"CRMOCode\":2290,\"CRMOName\":\"吉林长春分校\",\"CRMUID\":123,\"CRMUser\":\"test\",\"Suffix\":\"test\",\"IsLogin\":false,\"NeedToRegister\":true}"
-	testInfoWithDefauleOrgnation := "{\"Sign\":\"中公教育\",\"CRMEID\":\"HD202003061144\",\"CRMSID\":\"6edbf791cfbaaa68442dd75bfd10ae5b\",\"CRMChannel\":104,\"CRMOCode\":22,\"CRMOName\":\"吉林分校\",\"CRMUID\":123,\"CRMUser\":\"test\",\"Suffix\":\"test\",\"IsLogin\":false,\"NeedToRegister\":true}"
+	testInfo := "{\"Sign\":\"中公教育\",\"CRMEID\":\"HD202003061144\",\"CRMSID\":\"6edbf791cfbaaa68442dd75bfd10ae5b\",\"CRMChannel\":22,\"CRMOCode\":2290,\"CRMOName\":\"吉林长春分校\",\"CRMUID\":123,\"CRMUser\":\"test\",\"Suffix\":\"test\",\"NTalkerGID\":\"NTalkerGID\",\"IsLogin\":false,\"NeedToRegister\":true}"
+	testInfoWithDefauleOrgnation := "{\"Sign\":\"中公教育\",\"CRMEID\":\"HD202003061144\",\"CRMSID\":\"6edbf791cfbaaa68442dd75bfd10ae5b\",\"CRMChannel\":22,\"CRMOCode\":22,\"CRMOName\":\"吉林分校\",\"CRMUID\":123,\"CRMUser\":\"test\",\"Suffix\":\"test\",\"NTalkerGID\":\"NTalkerGID\",\"IsLogin\":false,\"NeedToRegister\":true}"
 	// 配置后缀为测试后缀
 	c.Params = gin.Params{gin.Param{Key: "Phone", Value: "17887106666"}, gin.Param{Key: "MID", Value: "10001"}, gin.Param{Key: "Suffix", Value: "test"}}
 	w.Body.Reset() // 再次测试前重置 body
 	GetSessionInfo(c)
 	assert.Equal(t, testInfo, w.Body.String())
 	// 设置设置默认后缀 CRM 组织 ID 为 0
-	orm.PostgreSQL.Model(structs.SingleSignOnSuffix{}).Where("suffix = 'test'").Update("crm_oid", "0")
+	orm.PostgreSQL.Unscoped().Model(structs.SingleSignOnSuffix{}).Where("suffix = 'test'").Update("crm_oid", "0")
 	w.Body.Reset() // 再次测试前重置 body
 	GetSessionInfo(c)
 	assert.Equal(t, testInfoWithDefauleOrgnation, w.Body.String())
 	// 设置默认后缀 CRM 组织 ID 为不存在的 ID
-	orm.PostgreSQL.Model(structs.SingleSignOnSuffix{}).Where("suffix = 'test'").Update("crm_oid", "10000")
+	orm.PostgreSQL.Unscoped().Model(structs.SingleSignOnSuffix{}).Where("suffix = 'test'").Update("crm_oid", "10000")
 	w.Body.Reset() // 再次测试前重置 body
 	GetSessionInfo(c)
 	assert.Equal(t, testInfoWithDefauleOrgnation, w.Body.String())
 	// 还原默认后缀 CRM 组织 ID
-	orm.PostgreSQL.Model(structs.SingleSignOnSuffix{}).Where("suffix = 'test'").Update("crm_oid", "2")
+	orm.PostgreSQL.Unscoped().Model(structs.SingleSignOnSuffix{}).Where("suffix = 'test'").Update("crm_oid", "2")
 
 	// 测试 校验是否需要注册
 	// 模拟注册手机号

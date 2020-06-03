@@ -327,6 +327,7 @@ func initTestData() {
 	defaultSuffixInfo.CRMUID = 32431 // 齐*
 	defaultSuffixInfo.CRMOID = 1     // 吉林分校
 	defaultSuffixInfo.CRMChannel = 7 // 19 课堂 ( 网推 )
+	defaultSuffixInfo.NTalkerGID = "NTalkerGID"
 	orm.PostgreSQL.Create(&defaultSuffixInfo)
 	// 后缀 1
 	suffixInfo := structs.SingleSignOnSuffix{}
@@ -339,6 +340,7 @@ func initTestData() {
 	suffixInfo.CRMUID = 123    // 高**
 	suffixInfo.CRMOID = 2      // 吉林长春分校
 	suffixInfo.CRMChannel = 22 // 户外推广 ( 市场 )
+	suffixInfo.NTalkerGID = "NTalkerGID"
 	orm.PostgreSQL.Create(&suffixInfo)
 
 	// 创建 测试用登陆模块信息
