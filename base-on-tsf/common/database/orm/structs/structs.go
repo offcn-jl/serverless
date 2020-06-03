@@ -19,8 +19,8 @@ import (
 // AutoMigrate 提供表结构自动迁移功能
 func AutoMigrate() {
 	// 判断是否符合表结构自动迁移条件
-	if len(config.Version) == 37 {
-		builtTime, _ := time.ParseInLocation("2006/01/02 15:04:05", config.Version[16:35], time.Local) // 使用parseInLocation将字符串格式化返回本地时区时间
+	if len(config.Version) == 29 {
+		builtTime, _ := time.ParseInLocation("2006/01/02 15:04:05", config.Version[8:27], time.Local) // 使用parseInLocation将字符串格式化返回本地时区时间
 		// 判断构建时间是否超过一小时
 		if time.Since(builtTime).Hours() > 1 {
 			// 超过一小时, 不需要进行迁移
